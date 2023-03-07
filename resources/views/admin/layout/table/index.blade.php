@@ -2,36 +2,6 @@
 @section('page_title', $page_title)
 @section('content')
 
-    @if($button->isShow || $button->isAdd)
-    <div class="card bg-transparent">
-        <div class="card-body ps-0 pt-0">
-            @if($button->isShow)
-            <a
-                href="{{ adminMainRoute("") }}"
-                class="btn btn-sm btn-primary"
-                id="btn_show_data"
-                title="Show Data"
-            >
-                <i class="fa fa-table"></i>
-                Show Data
-            </a>
-            @endif
-
-            @if($button->isAdd)
-            <a
-                href="{{ adminMainRoute("add") }}"
-                class="btn btn-sm btn-success"
-                id="btn_add_new_data"
-                title="Add Data"
-            >
-                <i class="fa fa-plus-circle"></i>
-                Add Data
-            </a>
-            @endif
-        </div>
-    </div>
-    @endif
-
     <div class="card shadow-sm">
 
         <div class="card-header">

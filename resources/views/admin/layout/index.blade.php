@@ -40,6 +40,32 @@
                                 <small class="text-muted fs-7 fw-bold my-1 ms-1">@yield('page_title', 'Dashboard')</small>
                             </h1>
                         </div>
+
+                        <div class="d-flex align-items-center gap-2 gap-lg-3">
+                            @if($button->isShow)
+                                <a
+                                    href="{{ adminMainRoute("") }}"
+                                    class="btn btn-sm btn-primary"
+                                    id="btn_show_data"
+                                    title="Show Data"
+                                >
+                                    <i class="fa fa-table"></i>
+                                    Show Data
+                                </a>
+                            @endif
+
+                            @if($button->isAdd)
+                                <a
+                                    href="{{ adminMainRoute("add") }}"
+                                    class="btn btn-sm btn-success"
+                                    id="btn_add_new_data"
+                                    title="Add Data"
+                                >
+                                    <i class="fa fa-plus-circle"></i>
+                                    Add Data
+                                </a>
+                            @endif
+                        </div>
                     </div>
                 </div>
                 <!--END TOOLBAR-->
