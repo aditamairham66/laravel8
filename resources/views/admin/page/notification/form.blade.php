@@ -20,15 +20,38 @@
                             data-bs-trigger="hover"
                             data-bs-dismiss="click"
                             data-bs-placement="left"
-                        >Url</label>
+                        >Content</label>
                         <input
-                            type="url" name="url" placeholder="You can only enter the letter only"
+                            type="text" name="content" placeholder="You can only enter the letter only"
                             autofocus
+                            required
                             class="form-control form-control-solid"
-                            value="{{ old('url', (!empty($form->url)?$form->url:null)) }}"
+                            value="{{ old('content', (!empty($form->content)?$form->content:null)) }}"
                         >
                         <div class="fv-plugins-message-container invalid-feedback">
-                            @error("url")
+                            @error("content")
+                            <i class='fa fa-info-circle'></i> {{ $message }}
+                            @enderror
+                        </div>
+                    </div>
+
+                    <div class="form-group mb-10">
+                        <label
+                            class="form-label col-sm-2 required"
+                            title="this field required"
+                            data-bs-toggle="tooltip"
+                            data-bs-trigger="hover"
+                            data-bs-dismiss="click"
+                            data-bs-placement="left"
+                        >Is Read</label>
+                        <input
+                            type="text" name="is_read" placeholder="You can only enter the letter only"
+                            autofocus
+                            class="form-control form-control-solid"
+                            value="{{ old('is_read', (!empty($form->is_read)?$form->is_read:0)) }}"
+                        >
+                        <div class="fv-plugins-message-container invalid-feedback">
+                            @error("is_read")
                             <i class='fa fa-info-circle'></i> {{ $message }}
                             @enderror
                         </div>

@@ -21,7 +21,6 @@ class CmsNotificationController extends Controller
         $this->table = $table;
         $this->button = $this->action([
             "isAdd" => false,
-            "isEdit" => false,
             "isShow" => false,
         ]);
     }
@@ -63,19 +62,22 @@ class CmsNotificationController extends Controller
         ));
     }
 
-//    /**
-//     * add cms_notification method
-//     */
-//    public function postAdd()
-//    {
-//        $save = $this->table->model;
-//
-//        return redirect(adminMainRoute(''))
-//            ->with([
-//                'message' => 'Successfully add data.',
-//                'message_type' => 'success'
-//            ]);
-//    }
+    /**
+     * add cms_notification method
+     */
+    public function postAdd()
+    {
+        $save = $this->table->model;
+        $save->content = request('content');
+        $save->is_read = request('is_read');
+        $save->save();
+
+        return redirect(adminMainRoute(''))
+            ->with([
+                'message' => 'Successfully add data.',
+                'message_type' => 'success'
+            ]);
+    }
 
     /**
      * view cms_notification form
@@ -92,19 +94,22 @@ class CmsNotificationController extends Controller
         ));
     }
 
-//    /**
-//     * edit cms_notification method
-//     */
-//    public function postEdit($id)
-//    {
-//        $save = $this->table->model->find($id);
-//
-//        return redirect(adminMainRoute(''))
-//            ->with([
-//                'message' => 'Successfully updated data.',
-//                'message_type' => 'success'
-//            ]);
-//    }
+    /**
+     * edit cms_notification method
+     */
+    public function postEdit($id)
+    {
+        $save = $this->table->model->find($id);
+        $save->content = request('content');
+        $save->is_read = request('is_read');
+        $save->save();
+
+        return redirect(adminMainRoute(''))
+            ->with([
+                'message' => 'Successfully updated data.',
+                'message_type' => 'success'
+            ]);
+    }
 
     /**
      * view cms_notification form
