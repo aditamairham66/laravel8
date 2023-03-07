@@ -75,6 +75,14 @@ trait BaseController
         $buttonName = $request->button_name;
         $listId = $request->checkbox;
 
+        if (!$listId) {
+            return redirect(adminMainRoute(''))
+                ->with([
+                    'message' => "You must select one of the data in the table first.",
+                    'message_type' => 'danger'
+                ]);
+        }
+
         if ($buttonName == "delete") {
             $this->table->model->newQuery()
                 ->whereIn('id', $listId)
