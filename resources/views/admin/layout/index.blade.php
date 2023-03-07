@@ -42,7 +42,7 @@
                         </div>
 
                         <div class="d-flex align-items-center gap-2 gap-lg-3">
-                            @if($button->isShow)
+                            @if(!empty($button->isShow))
                                 <a
                                     href="{{ adminMainRoute("") }}"
                                     class="btn btn-sm btn-primary"
@@ -54,7 +54,7 @@
                                 </a>
                             @endif
 
-                            @if($button->isAdd)
+                            @if(!empty($button->isAdd))
                                 <a
                                     href="{{ adminMainRoute("add") }}"
                                     class="btn btn-sm btn-success"
