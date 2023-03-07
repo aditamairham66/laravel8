@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Admin\BaseController;
 use App\Http\Controllers\Controller;
 use App\Repositories\Table\CmsNotification\CmsNotificationRepositories;
 use App\Traits\Admin\Authentication;
@@ -10,7 +11,7 @@ use Illuminate\Http\Request;
 
 class CmsNotificationController extends Controller
 {
-    use BaseController, Authentication;
+    use Authentication, BaseController;
 
     private $table, $button;
     public function __construct(

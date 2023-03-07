@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Helpers\Upload;
+use App\Http\Controllers\Admin\BaseController;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\Profile\AddCmsUsersRequest;
 use App\Http\Requests\Admin\Profile\EditCmsUsersRequest;

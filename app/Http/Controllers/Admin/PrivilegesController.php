@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Admin\BaseController;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\Privileges\AddCmsPrivilegesRequest;
 use App\Http\Requests\Admin\Privileges\EditCmsPrivilegesRequest;
