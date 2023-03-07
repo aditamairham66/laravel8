@@ -92,7 +92,7 @@ trait BaseController
         return redirect(adminMainRoute(''))
             ->with([
                 'message' => "Successfully $buttonName data.",
-                'message_type' => 'warning'
+                'message_type' => 'success'
             ]);
     }
 
