@@ -1,0 +1,11 @@
+<?php
+
+namespace App\Models\Table;
+
+use App\Models\Entity\{class_name};
+use Illuminate\Database\Eloquent\Model;
+
+class {class_name}Table extends {class_name}
+{
+    // you can add your property model here
+}

@@ -1,0 +1,121 @@
+<?php
+
+namespace App\Http\Controllers\{path_class};
+
+use App\Http\Controllers\Admin\BaseController;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\Privileges\Add{class_name}Request;
+use App\Http\Requests\Admin\Privileges\Edit{class_name}Request;
+use App\Repositories\Table\CmsPrivileges\{class_name}Repositories;
+use Illuminate\Http\Request;
+
+class {class_name}Controller extends Controller
+{
+    use BaseController;
+
+    private $table, $button;
+    public function __construct(
+        {class_name}Repositories $table
+    )
+    {
+        $this->table = $table;
+        $this->button = $this->action();
+    }
+
+    /**
+     * view {file_name} form
+     */
+    public function getIndex(Request $request)
+    {
+        $limit = $request->query('limit', 10);
+        $search = $request->query('q');
+
+        $page_title = "{class_name}";
+        $result = $this->table->getPaginated($search, $limit);
+        $button = $this->button;
+        return view('admin.page.{file_name}.index', compact(
+            'page_title',
+            'result',
+            'limit',
+            'button'
+        ));
+    }
+
+    /**
+     * view {file_name} form
+     */
+    public function getAdd()
+    {
+        $page_title = "Add {class_name}";
+        $form = $this->table->model;
+        $link = adminMainRoute("add");
+        return view('admin.page.{file_name}.form', compact(
+            'page_title',
+            'form',
+            'link'
+        ));
+    }
+
+    /**
+     * add {file_name} method
+     */
+    public function postAdd(Add{class_name}Request $request)
+    {
+        $save = $this->table->model;
+        // add params here
+        $save->save();
+
+        return redirect(adminMainRoute(''))
+            ->with([
+                'message' => 'Successfully add data.',
+                'message_type' => 'success'
+            ]);
+    }
+
+    /**
+     * view {file_name} form
+     */
+    public function getEdit($id)
+    {
+        $page_title = "Edit {class_name}";
+        $form = $this->table->model->find($id);
+        $link = adminMainRoute("edit/$id");
+        return view('admin.page.{file_name}.form', compact(
+            'page_title',
+            'form',
+            'link'
+        ));
+    }
+
+    /**
+     * edit {file_name} method
+     */
+    public function postEdit(Edit{class_name}Request $request, $id)
+    {
+        $save = $this->table->model->find($id);
+        // add params here
+        $save->save();
+
+        return redirect(adminMainRoute(''))
+            ->with([
+                'message' => 'Successfully updated data.',
+                'message_type' => 'success'
+            ]);
+    }
+
+    /**
+     * view {file_name} form
+     */
+    public function getDetail($id)
+    {
+        $page_title = "Detail {class_name}";
+        $form = $this->table->model->find($id);
+        $link = adminMainRoute("");
+        return view('admin.page.{file_name}.detail', compact(
+            'page_title',
+            'form',
+            'link'
+        ));
+    }
+
+}

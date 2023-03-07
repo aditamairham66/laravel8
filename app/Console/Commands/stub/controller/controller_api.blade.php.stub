@@ -1,0 +1,32 @@
+<?php
+
+namespace App\Http\Controllers\{path_class};
+
+use App\Helpers\Api\Response;
+use App\Traits\Api\Authentication;
+use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
+
+class {class_name}Controller extends Controller
+{
+    use Authentication;
+
+    private $res;
+    public function __construct(
+        Response $res
+    )
+    {
+        $this->res = $res;
+    }
+
+    /**
+     * view {class_name} form
+     */
+    public function getIndex(Request $request)
+    {
+        // your code here
+    }
+
+    // your code here
+
+}

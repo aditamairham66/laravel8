@@ -1,0 +1,12 @@
+<?php
+
+namespace App\Models\Entity;
+
+use App\Models\BaseModel;
+
+class {class_name} extends BaseModel
+{
+    protected $table = "{table_name}";
+
+    // you can add your property model here
+}

@@ -1,0 +1,8 @@
+<?php
+
+namespace App\Repositories\Interfaces\{class_name};
+
+interface {class_name}Interface
+{
+
+}
