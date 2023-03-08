@@ -47,13 +47,16 @@ You can replace ``{tableName}`` with the table name from your database
 ### Create auto controller structured
 with command base laravel
 ```php
-php artisan create:controller {name} {type}
+php artisan create:controller {name} {type} --no-table=no
 ```
 You can replace ``{name}`` with the table name from your database
+
 You can replace ``{type}`` with two types namely ``general``, ``api``, and ``admin``. but by default use type ``general`` to output:
 - ``general`` to generate controllers from being used in the backend
 - ``api`` to generate controllers for use in the api development
 - ``admin`` to generate controllers for use in the backend
+
+You can enter ``{--no-table}`` with ``yes``, and ``no``. but by default it is ``no``.
 
 after creating controller you can register controller in laravel routes in ``routes/admin.php`` file
 ```injectablephp
