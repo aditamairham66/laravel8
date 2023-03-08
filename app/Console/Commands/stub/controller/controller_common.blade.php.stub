@@ -2,16 +2,13 @@
 
 namespace App\Http\Controllers\{path_class};
 
-use App\Http\Controllers\Admin\BaseController;
 use App\Http\Controllers\Controller;
-use App\Repositories\Table\CmsPrivileges\{class_name}Repositories;
+use App\Repositories\Table\{class_name}\{class_name}Repositories;
 use Illuminate\Http\Request;
 
 class {class_name}Controller extends Controller
 {
-    use BaseController;
-
-    private $table, $button;
+    private $table;
     public function __construct(
         {class_name}Repositories $table
     )

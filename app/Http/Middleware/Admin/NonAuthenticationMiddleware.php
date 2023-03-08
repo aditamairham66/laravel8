@@ -5,6 +5,7 @@ namespace App\Http\Middleware\Admin;
 use App\Traits\Admin\Authentication;
 use Closure;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 
 class NonAuthenticationMiddleware
 {
@@ -21,7 +22,7 @@ class NonAuthenticationMiddleware
         if(!empty($this->auth()->id)) {
             $url_prev = url()->previous();
             $url_prev = str_replace(url('/admin'), '', $url_prev);
-            if ($request->segment(2) !== 'logout') {
+            if ($request->is('/admin/auth/*')) {
                 $exception = ['/login', '/forgot'];
 
                 if (in_array($url_prev, $exception)) {

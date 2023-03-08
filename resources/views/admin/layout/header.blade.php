@@ -127,7 +127,7 @@
                         </div>
                         <div class="separator my-2"></div>
                         <div class="menu-item px-5 my-1">
-                            <a href="#" class="menu-link px-5">
+                            <a href="{{ route('admin.lockuser') }}" class="menu-link px-5">
                                 <i class='fa fa-key'></i>&nbsp; Lock Screen
                             </a>
                         </div>

@@ -4,9 +4,9 @@ namespace App\Http\Controllers\{path_class};
 
 use App\Http\Controllers\Admin\BaseController;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Admin\Privileges\Add{class_name}Request;
-use App\Http\Requests\Admin\Privileges\Edit{class_name}Request;
-use App\Repositories\Table\CmsPrivileges\{class_name}Repositories;
+use App\Http\Requests\Admin\{class_name}\Add{class_name}Request;
+use App\Http\Requests\Admin\{class_name}\Edit{class_name}Request;
+use App\Repositories\Table\{class_name}\{class_name}Repositories;
 use Illuminate\Http\Request;
 
 class {class_name}Controller extends Controller

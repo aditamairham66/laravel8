@@ -5,6 +5,7 @@ namespace App\Http\Middleware\Admin;
 use App\Traits\Admin\Authentication;
 use Closure;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 
 class AuthenticationMiddleware
 {
@@ -24,6 +25,12 @@ class AuthenticationMiddleware
                 ->with([
                     'message' => "You must login first !"
                 ]);
+        }
+
+        if (!empty($this->auth()->id)) {
+            if ($request->is('/admin/lockscreen') || Session::get('lockscreen') == 1) {
+                return redirect('/admin/lockscreen');
+            }
         }
 
         return $next($request);
