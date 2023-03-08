@@ -49,7 +49,7 @@ with command base laravel
 ```php
 php artisan create:controller {name} {type} --no-table=no
 ```
-You can replace ``{name}`` with the table name from your database
+You can replace ``{name}`` with the table name controller path
 
 You can replace ``{type}`` with two types namely ``general``, ``api``, and ``admin``. but by default use type ``general`` to output:
 - ``general`` to generate controllers from being used in the backend
