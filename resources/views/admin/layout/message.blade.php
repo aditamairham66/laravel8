@@ -13,7 +13,7 @@
                     Successfully
                 @elseif(Session::get("message_type") == "warning")
                     Warning
-                @elseif(Session::get("message_type") == "warning")
+                @elseif(Session::get("message_type") == "danger")
                     Error...
                 @else
                     Info
