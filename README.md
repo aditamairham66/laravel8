@@ -62,3 +62,13 @@ after creating controller you can register controller in laravel routes in ``rou
 ```injectablephp
     routeController('/{route_name}', '{PATH_TO_CONTROLLER}');
 ```
+
+in a controller with type ``admin`` you can use some of the functions/methods that are already in the BaseController Class with
+```injectablephp
+    public function postActionSelected(Request $request)
+    {
+        // your logic code here
+        
+        return parent::postActionSelected($request)
+    }
+```
