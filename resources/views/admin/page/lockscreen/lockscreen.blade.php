@@ -71,7 +71,7 @@
                     </div>
 
                     <div class="d-flex flex-wrap justify-content-center pb-lg-0">
-                        <button type="button" id="kt_password_reset_submit" class="btn btn-lg btn-primary fw-bolder me-4">
+                        <button type="submit" id="kt_password_reset_submit" class="btn btn-lg btn-primary fw-bolder me-4">
                             <span class="indicator-label">Submit</span>
                             <span class="indicator-progress">Please wait...
 									<span class="spinner-border spinner-border-sm align-middle ms-2"></span></span>
