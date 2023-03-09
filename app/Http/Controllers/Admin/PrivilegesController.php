@@ -13,7 +13,7 @@ class PrivilegesController extends Controller
 {
     use BaseController;
 
-    private $table, $button, $buttonBulk;
+    private $table, $button, $buttonBulk, $buttonAction;
     public function __construct(
         CmsPrivilegesRepositories $table
     )
@@ -22,6 +22,14 @@ class PrivilegesController extends Controller
         $this->button = $this->action();
         $this->buttonBulk = [
             // ["type" => "type", "name" => "Name Text"],
+        ];
+        $this->buttonAction = [
+            // [
+            //     "type" => "primary",
+            //     "label" => "Test",
+            //     "icon" => "fa fa-pen",
+            //      "link" => adminRoute('/'),
+            // ],
         ];
     }
 
@@ -37,12 +45,14 @@ class PrivilegesController extends Controller
         $result = $this->table->getPaginated($search, $limit);
         $button = $this->button;
         $buttonBulk = $this->buttonBulk;
+        $buttonAction = $this->buttonAction;
         return view('admin.page.privileges.index', compact(
             'page_title',
             'result',
             'limit',
             'button',
-            'buttonBulk'
+            'buttonBulk',
+            'buttonAction'
         ));
     }
 

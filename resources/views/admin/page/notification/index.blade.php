@@ -32,6 +32,7 @@
                     <td>{{ ($rowRes->is_read == 1 ? "Yes" : "No") }}</td>
                     <td>
                         @include('admin.layout.table.action', [
+                            "buttonAction" => $buttonAction,
                             "isEdit" => $button->isEdit,
                             "isDelete" => $button->isDelete,
                             "isDetail" => $button->isDetail,

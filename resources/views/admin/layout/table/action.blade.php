@@ -2,6 +2,19 @@
     class="button_action"
     style="text-align:right"
 >
+    @foreach($buttonAction as $rowButtonAction)
+        <a
+            class="btn @if(empty($rowButtonAction['label'])) btn-icon @endif btn-sm btn-{{ $rowButtonAction['type'] }}"
+            title="Detail Data"
+            href="{{ $rowButtonAction['link'] }}"
+        >
+            @if($rowButtonAction['icon'])
+            <i class="{{ $rowButtonAction['icon'] }}"></i>
+            @endif
+            {{ $rowButtonAction['label'] }}
+        </a>
+    @endforeach
+
     @if($isDetail)
     <a
         class="btn btn-icon btn-sm btn-primary btn-detail"

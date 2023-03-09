@@ -13,7 +13,7 @@ class CmsNotificationController extends Controller
 {
     use Authentication, BaseController;
 
-    private $table, $button;
+    private $table, $button, $buttonBulk, $buttonAction;
     public function __construct(
         CmsNotificationRepositories $table
     )
@@ -23,6 +23,17 @@ class CmsNotificationController extends Controller
             "isAdd" => false,
             "isShow" => false,
         ]);
+        $this->buttonBulk = [
+            // ["type" => "type", "name" => "Name Text"],
+        ];
+        $this->buttonAction = [
+            // [
+            //     "type" => "primary",
+            //     "label" => "Test",
+            //     "icon" => "fa fa-pen",
+            //      "link" => adminRoute('/'),
+            // ],
+        ];
     }
 
     /**
@@ -39,11 +50,15 @@ class CmsNotificationController extends Controller
         $page_title = "Notification";
         $result = $this->table->getNotificationByUsersPaginated($usersId, $search, $limit);
         $button = $this->button;
+        $buttonBulk = $this->buttonBulk;
+        $buttonAction = $this->buttonAction;
         return view('admin.page.notification.index', compact(
             'page_title',
             'result',
             'limit',
-            'button'
+            'button',
+            'buttonBulk',
+            'buttonAction'
         ));
     }
 

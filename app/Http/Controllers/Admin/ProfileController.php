@@ -17,7 +17,7 @@ class ProfileController extends Controller
 {
     use Authentication, BaseController;
 
-    private $table, $button, $buttonBulk, $cmsPrivilegesRepositories;
+    private $table, $button, $buttonBulk, $buttonAction, $cmsPrivilegesRepositories;
     public function __construct(
         CmsUsersRepositories $table,
         CmsPrivilegesRepositories $cmsPrivilegesRepositories
@@ -27,6 +27,14 @@ class ProfileController extends Controller
         $this->button = $this->action();
         $this->buttonBulk = [
             // ["type" => "type", "name" => "Name Text"],
+        ];
+        $this->buttonAction = [
+            // [
+            //     "type" => "primary",
+            //     "label" => "Test",
+            //     "icon" => "fa fa-pen",
+            //      "link" => adminRoute('/'),
+            // ],
         ];
         $this->cmsPrivilegesRepositories = $cmsPrivilegesRepositories;
     }
@@ -43,12 +51,14 @@ class ProfileController extends Controller
         $result = $this->table->getPaginated($search, $limit);
         $button = $this->button;
         $buttonBulk = $this->buttonBulk;
+        $buttonAction = $this->buttonAction;
         return view('admin.page.profile.index', compact(
             'page_title',
             'result',
             'limit',
             'button',
-            'buttonBulk'
+            'buttonBulk',
+            'buttonAction'
         ));
     }
 
