@@ -13,13 +13,16 @@ class PrivilegesController extends Controller
 {
     use BaseController;
 
-    private $table, $button;
+    private $table, $button, $buttonBulk;
     public function __construct(
         CmsPrivilegesRepositories $table
     )
     {
         $this->table = $table;
         $this->button = $this->action();
+        $this->buttonBulk = [
+            // ["type" => "type", "name" => "Name Text"],
+        ];
     }
 
     /**
@@ -33,11 +36,13 @@ class PrivilegesController extends Controller
         $page_title = "Privileges Roles";
         $result = $this->table->getPaginated($search, $limit);
         $button = $this->button;
+        $buttonBulk = $this->buttonBulk;
         return view('admin.page.privileges.index', compact(
             'page_title',
             'result',
             'limit',
-            'button'
+            'button',
+            'buttonBulk'
         ));
     }
 

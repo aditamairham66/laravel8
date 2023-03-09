@@ -17,15 +17,18 @@ class ProfileController extends Controller
 {
     use Authentication, BaseController;
 
-    private $table, $button, $cmsPrivilegesRepositories;
+    private $table, $button, $buttonBulk, $cmsPrivilegesRepositories;
     public function __construct(
         CmsUsersRepositories $table,
         CmsPrivilegesRepositories $cmsPrivilegesRepositories
     )
     {
         $this->table = $table;
-        $this->cmsPrivilegesRepositories = $cmsPrivilegesRepositories;
         $this->button = $this->action();
+        $this->buttonBulk = [
+            // ["type" => "type", "name" => "Name Text"],
+        ];
+        $this->cmsPrivilegesRepositories = $cmsPrivilegesRepositories;
     }
 
     /**
@@ -39,11 +42,13 @@ class ProfileController extends Controller
         $page_title = "Users Management";
         $result = $this->table->getPaginated($search, $limit);
         $button = $this->button;
+        $buttonBulk = $this->buttonBulk;
         return view('admin.page.profile.index', compact(
             'page_title',
             'result',
             'limit',
-            'button'
+            'button',
+            'buttonBulk'
         ));
     }
 

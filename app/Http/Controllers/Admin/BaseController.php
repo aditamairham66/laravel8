@@ -18,6 +18,7 @@ trait BaseController
             "isDelete" => true,
             "isDetail" => true,
             "isShow" => true,
+            "isBulkButton" => true,
         ];
 
         return (object) collect($list)

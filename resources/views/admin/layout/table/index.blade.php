@@ -6,6 +6,7 @@
 
         <div class="card-header">
             <h3 class="card-title">
+                @if($button->isBulkButton)
                 <div class="dropdown selected-action">
                     <button
                         class="btn btn-sm btn-secondary dropdown-toggle"
@@ -35,8 +36,26 @@
                                 <i class="fa fa-trash"></i> Delete Selected
                             </a>
                         </li>
+                        @foreach($buttonBulk as $rowButtonBulk)
+                            <li>
+                                <a
+                                    href="javascript:void(0)"
+                                    data-name="{{ $rowButtonBulk['type'] }}"
+                                    class="dropdown-item"
+                                    title="{{ $rowButtonBulk['name'] }}"
+                                    data-bs-toggle="tooltip"
+                                    data-bs-trigger="hover"
+                                    data-bs-dismiss="click"
+                                    data-bs-placement="right"
+                                    data-bs-original-title="{{ $rowButtonBulk['name'] }}"
+                                >
+                                    <i class="fa fa-trash"></i> {{ $rowButtonBulk['name'] }}
+                                </a>
+                            </li>
+                        @endforeach
                     </ul>
                 </div>
+                @endif
             </h3>
             <div class="card-toolbar">
                 <form method='get' action='{{Request::url()}}'>

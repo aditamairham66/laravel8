@@ -13,13 +13,16 @@ class {class_name}Controller extends Controller
 {
     use BaseController;
 
-    private $table, $button;
+    private $table, $button, $buttonBulk;
     public function __construct(
         {class_name}Repositories $table
     )
     {
         $this->table = $table;
         $this->button = $this->action();
+        $this->buttonBulk = [
+            // ["type" => "type", "name" => "Name Text"],
+        ];
     }
 
     /**
@@ -33,11 +36,13 @@ class {class_name}Controller extends Controller
         $page_title = "{class_name}";
         $result = $this->table->getPaginated($search, $limit);
         $button = $this->button;
+        $buttonBulk = $this->buttonBulk;
         return view('admin.page.{file_name}.index', compact(
             'page_title',
             'result',
             'limit',
-            'button'
+            'button',
+            'buttonBulk'
         ));
     }
 
