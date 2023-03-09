@@ -13,8 +13,10 @@
                     Successfully
                 @elseif(Session::get("message_type") == "warning")
                     Warning
-                @else
+                @elseif(Session::get("message_type") == "warning")
                     Error...
+                @else
+                    Info
                 @endif
             </h4>
             <span>{!!Session::get('message')!!}</span>

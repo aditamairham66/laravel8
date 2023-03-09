@@ -7,11 +7,12 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\Privileges\AddCmsPrivilegesRequest;
 use App\Http\Requests\Admin\Privileges\EditCmsPrivilegesRequest;
 use App\Repositories\Table\CmsPrivileges\CmsPrivilegesRepositories;
+use App\Traits\Admin\Authentication;
 use Illuminate\Http\Request;
 
-class PrivilegesController extends Controller
+class PrivilegesController extends BaseController
 {
-    use BaseController;
+    use Authentication;
 
     private $table, $button, $buttonBulk, $buttonAction;
     public function __construct(

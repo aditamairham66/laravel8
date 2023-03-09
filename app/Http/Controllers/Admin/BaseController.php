@@ -3,9 +3,10 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Helpers\Upload;
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-trait BaseController
+class BaseController extends Controller
 {
     /**
      * get action table
@@ -61,10 +62,10 @@ trait BaseController
         $save->$field = null;
         $save->save();
 
-        return redirect(adminMainRoute(''))
+        return redirect()->back()
             ->with([
                 'message' => 'Successfully deleted image.',
-                'message_type' => 'warning'
+                'message_type' => 'info'
             ]);
     }
 

@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Admin;
 
 use App\Helpers\Upload;
 use App\Http\Controllers\Admin\BaseController;
-use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\Profile\AddCmsUsersRequest;
 use App\Http\Requests\Admin\Profile\EditCmsUsersRequest;
 use App\Repositories\Table\CmsPrivileges\CmsPrivilegesRepositories;
@@ -13,11 +12,11 @@ use App\Traits\Admin\Authentication;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
-class ProfileController extends Controller
+class ProfileController extends BaseController
 {
-    use Authentication, BaseController;
+    use Authentication;
 
-    private $table, $button, $buttonBulk, $buttonAction, $cmsPrivilegesRepositories;
+    public $table, $button, $buttonBulk, $buttonAction, $cmsPrivilegesRepositories;
     public function __construct(
         CmsUsersRepositories $table,
         CmsPrivilegesRepositories $cmsPrivilegesRepositories
@@ -182,6 +181,5 @@ class ProfileController extends Controller
             'link'
         ));
     }
-
 
 }

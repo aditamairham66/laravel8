@@ -9,9 +9,9 @@ use App\Traits\Admin\Authentication;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
-class CmsNotificationController extends Controller
+class CmsNotificationController extends BaseController
 {
-    use Authentication, BaseController;
+    use Authentication;
 
     private $table, $button, $buttonBulk, $buttonAction;
     public function __construct(

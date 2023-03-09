@@ -7,11 +7,12 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\{class_name}\Add{class_name}Request;
 use App\Http\Requests\Admin\{class_name}\Edit{class_name}Request;
 use App\Repositories\Table\{class_name}\{class_name}Repositories;
+use App\Traits\Admin\Authentication;
 use Illuminate\Http\Request;
 
-class {class_name}Controller extends Controller
+class {class_name}Controller extends BaseController
 {
-    use BaseController;
+    use Authentication;
 
     private $table, $button, $buttonBulk, $buttonAction;
     public function __construct(
