@@ -45,5 +45,5 @@ Route::middleware([
 
 //Route::get('/test', function () {
 //    $img = "uploads/base64/7a0b4b6d-bf09-4029-847b-997838fb1444.png";
-//    return \App\Helpers\Image::resize($img);
+//    return (new \App\Helpers\File)->resize($img);
 //});
