@@ -29,9 +29,6 @@ class File
             throw new \Error('Extension file doe not match with '.implode(', ', $extFile));
         }
 
-        // according to path your image file
-        $img = Images::make($path);
-
         $width = request('width');
         if (empty($width)) {
             $width = null;
@@ -41,6 +38,8 @@ class File
             $height = null;
         }
 
+        // according to path your image file
+        $img = Images::make($path);
         //manipulate image
         $img->resize($width, $height, function ($constraint) {
             $constraint->aspectRatio();
