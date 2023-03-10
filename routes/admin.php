@@ -42,8 +42,3 @@ Route::middleware([
     Route::post('/lockscreen', [LockscreenController::class, 'postLockscreen'])->name('admin.lockscreen');
     Route::get('/lock-account', [LockscreenController::class, 'getLockUser'])->name('admin.lockuser');
 });
-
-//Route::get('/test', function () {
-//    $img = "uploads/base64/7a0b4b6d-bf09-4029-847b-997838fb1444.png";
-//    return (new \App\Helpers\File)->resize($img);
-//});
