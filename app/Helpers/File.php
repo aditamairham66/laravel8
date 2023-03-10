@@ -74,9 +74,7 @@ class File
          $type = Files::mimeType($path);
 
          $response = Response::make($file, 200);
-         $response->header("Content-Type", $type);
-
-         return $response;
+         return $response->header("Content-Type", $type);
      }
 
     /**
