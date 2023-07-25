@@ -9,6 +9,25 @@ use Illuminate\Http\Request;
 class BaseController extends Controller
 {
     /**
+     * private property
+     */
+    private $table;
+    /**
+     * set private property
+     */
+    protected function set($name, $value)
+    {
+        $this->$name = $value;
+    }
+    /**
+     * get private property
+     */
+    protected function get($name)
+    {
+        return $this->$name;
+    }
+
+    /**
      * get action table
      */
     public function action($action = [])
@@ -36,7 +55,7 @@ class BaseController extends Controller
      */
     public function getDelete($id)
     {
-        $save = $this->table->model->find($id);
+        $save = $this->get('table')->model->find($id);
         // delete cms_users
         $save->delete();
 
@@ -53,7 +72,7 @@ class BaseController extends Controller
     public function getDeleteImage(Request $request, $id)
     {
         $field = $request->query('field');
-        $save = $this->table->model->find($id);
+        $save = $this->get('table')->model->find($id);
 
         // remove the image
         Upload::remove($save->$field);
@@ -86,7 +105,7 @@ class BaseController extends Controller
         }
 
         if ($buttonName == "delete") {
-            $this->table->model->newQuery()
+            $this->get('table')->model->newQuery()
                 ->whereIn('id', $listId)
                 ->delete();
         }
