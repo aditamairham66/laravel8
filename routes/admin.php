@@ -23,6 +23,7 @@ Route::middleware([
     AuthenticationMiddleware::class
 ])->group(function () {
     Route::get('/', [DashboardController::class, 'getIndex']);
+
     routeController('/profile', 'Admin\ProfileController');
     routeController('/privileges', 'Admin\PrivilegesController');
     routeController('/notifications', 'Admin\CmsNotificationController');
