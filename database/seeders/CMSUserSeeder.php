@@ -16,6 +16,11 @@ class CMSUserSeeder extends Seeder
      */
     public function run()
     {
+        // clear table cms_privileges
+        \Illuminate\Support\Facades\Schema::disableForeignKeyConstraints();
+        \Illuminate\Support\Facades\DB::table('cms_privileges')->truncate();
+        \Illuminate\Support\Facades\Schema::enableForeignKeyConstraints();
+
         $privileges = [
             "Super Administrator"
         ];
@@ -32,12 +37,18 @@ class CMSUserSeeder extends Seeder
         $this->command->info('cms_privileges is generated');
 
 
+        // clear table cms_users
+        \Illuminate\Support\Facades\Schema::disableForeignKeyConstraints();
+        \Illuminate\Support\Facades\DB::table('cms_users')->truncate();
+        \Illuminate\Support\Facades\Schema::enableForeignKeyConstraints();
+
         $users = [
             0 => [
                 "name" => "Admin Backend",
                 "email" => "admin@backend.com",
                 "password" => Hash::make('123456'),
                 "cms_privileges_id" => "1",
+                "photo" => "metro/assets/media/avatars/300-1.jpg",
             ],
         ];
         foreach ($users as $rowU) {
