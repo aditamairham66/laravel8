@@ -20,7 +20,7 @@ trait Authentication
         return Session::put('admin_login', (object) $value);
     }
 
-    function auth()
+    static function auth()
     {
         $data = Session::get('admin_login');
 
