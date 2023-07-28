@@ -153,6 +153,9 @@ class CmsNotificationController extends BaseController
         $save->is_read = 1;
         $save->save();
 
+        // read notification
+        if ($save->url) return redirect($save->url);
+
         return redirect(adminMainRoute(''))
             ->with([
                 'message' => 'Successfully read notification.',
