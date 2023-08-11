@@ -51,10 +51,26 @@ php artisan create:service md_dosen
 ```
 
 ### Create auto controller structured
-with command base laravel
+this is like creating a controller using command from laravel but there is a little difference,
+i.e. you are required to blind a table first.
+then, you can enter the name of the table in the controller path that will be created for example:
+```php
+{pathController}\{nameTable}
+```
+for ```{nameTable}``` above, you can replace it with the name of your table by writing the Pascal case, for example:
+```
+table: md_dosen
+
+//  become
+
+table MdDosen
+```
+
+let's try create a controller with command base laravel.
 ```php
 php artisan create:controller {name} {type} --withTable=no
 ```
+
 You can replace ``{name}`` with the table name controller path like example below:
 
 ```php
