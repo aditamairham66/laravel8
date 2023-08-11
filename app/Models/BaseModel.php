@@ -40,4 +40,5 @@ class BaseModel extends Model
     {
         return Schema::getColumnListing($this->getTable());
     }
+
 }

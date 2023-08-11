@@ -12,7 +12,7 @@ class CreateControllerCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'create:controller {name} {type=general} {--no-table=no}';
+    protected $signature = 'create:controller {name} {type=general} {--withTable=no}';
 
     /**
      * The console command description.
@@ -40,7 +40,7 @@ class CreateControllerCommand extends Command
     {
         $getName = $this->argument("name");
         $getType= $this->argument("type");
-        $getWithTable= $this->option("no-table");
+        $getWithTable= $this->option("withTable");
 
         $this->make($getName, $getType, $getWithTable);
     }
