@@ -1,0 +1,32 @@
+@extends('admin.layout.index')
+@section('page_title', $page_title)
+@section('content')
+
+    <div class="card shadow-sm">
+        <div class="card-header">
+            <h3 class="card-title">{{ $page_title }}</h3>
+        </div>
+        <form action="{{ $link }}" method="POST" enctype="multipart/form-data">
+            {{ csrf_field() }}
+            {{ method_field('POST') }}
+            <div class="card-body">
+                <div class="col-md-10">
+
+                    [column]
+
+                </div>
+            </div>
+
+            <div class="card-footer border-0">
+                <a
+                    href='{{ adminMainRoute("") }}'
+                    class='btn btn-default'
+                ><i class='fa fa-chevron-circle-left'></i> Back</a>
+                <button type="submit" class="btn btn-success">Save</button>
+            </div>
+        </form>
+    </div>
+
+@endsection
+@push('bottom')
+@endpush
