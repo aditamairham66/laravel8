@@ -3,8 +3,6 @@
 use App\Http\Controllers\Admin\Auth\ForgotController;
 use App\Http\Controllers\Admin\Auth\LoginController;
 use App\Http\Controllers\Admin\Auth\LockscreenController;
-use App\Http\Controllers\Admin\DashboardController;
-use App\Http\Middleware\Admin\AuthenticationMiddleware;
 use App\Http\Middleware\Admin\NonAuthenticationMiddleware;
 use Illuminate\Support\Facades\Route;
 
@@ -18,17 +16,6 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
-Route::middleware([
-    AuthenticationMiddleware::class
-])->group(function () {
-    Route::get('/', [DashboardController::class, 'getIndex']);
-
-    routeController('/profile', 'Admin\ProfileController');
-    routeController('/privileges', 'Admin\PrivilegesController');
-    routeController('/notifications', 'Admin\CmsNotificationController');
-});
-
 Route::middleware([
     NonAuthenticationMiddleware::class
 ])->group(function () {

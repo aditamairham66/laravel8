@@ -95,7 +95,7 @@ php artisan create:controller Admin\MdDosen admin
 
 You can enter ``{--withTable}`` with ``yes``, and ``no``. but by default it is ``no``.
 
-after creating controller you can register controller in laravel routes in ``routes/admin.php`` file
+after creating controller you can register controller in laravel routes in ``routes/adminRoute.php`` file
 ```injectablephp
     routeController('/{route_name}', '{PATH_TO_CONTROLLER}');
 ```
