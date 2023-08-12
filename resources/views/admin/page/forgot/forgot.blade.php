@@ -46,12 +46,12 @@
                     </div>
 
                     <div class="d-flex flex-wrap justify-content-center pb-lg-0">
-                        <button type="button" id="kt_password_reset_submit" class="btn btn-lg btn-primary fw-bolder me-4">
+                        <a href="{{ adminRoute('login') }}" class="btn btn-lg btn-light-primary fw-bolde me-4">Sign In</a>
+                        <button type="button" id="kt_password_reset_submit" class="btn btn-lg btn-primary fw-bolder">
                             <span class="indicator-label">Forgot Password</span>
                             <span class="indicator-progress">Please wait...
 									<span class="spinner-border spinner-border-sm align-middle ms-2"></span></span>
                         </button>
-                        <a href="{{ adminRoute('login') }}" class="btn btn-lg btn-light-primary fw-bolder">Sign In</a>
                     </div>
                 </form>
             </div>

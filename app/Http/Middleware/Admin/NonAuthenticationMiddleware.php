@@ -5,7 +5,6 @@ namespace App\Http\Middleware\Admin;
 use App\Traits\Admin\Authentication;
 use Closure;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Session;
 
 class NonAuthenticationMiddleware
 {
@@ -19,15 +18,14 @@ class NonAuthenticationMiddleware
      */
     public function handle(Request $request, Closure $next)
     {
-        if(!empty($this->auth()->id)) {
-            $url_prev = url()->previous();
-            $url_prev = str_replace(url('/admin'), '', $url_prev);
-            if ($request->is('/admin/auth/*')) {
+        if(!empty(self::auth()->id)) {
+            $urlCurrent = url()->current();
+            $urlCurrent = str_replace(url('/admin'), '', $urlCurrent);
+
+            if ($request->is('admin/*')) {
                 $exception = ['/login', '/forgot'];
 
-                if (in_array($url_prev, $exception)) {
-                    return redirect('/admin');
-                } else {
+                if (in_array($urlCurrent, $exception)) {
                     return redirect('/admin');
                 }
             }

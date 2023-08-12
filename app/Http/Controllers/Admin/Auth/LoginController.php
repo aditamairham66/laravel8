@@ -7,6 +7,7 @@ use App\Repositories\Table\CmsUsers\CmsUsersRepositories;
 use App\Traits\Admin\Authentication;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Session;
 
 class LoginController extends Controller
 {
@@ -48,6 +49,9 @@ class LoginController extends Controller
                             'message' => "Password is not correct."
                         ]);
                 }
+
+                // delete lockscreen
+                if (Session::has('lockscreen')) Session::forget('lockscreen');
 
                 // create session users
                 $users['id'] = $findUsers->id;

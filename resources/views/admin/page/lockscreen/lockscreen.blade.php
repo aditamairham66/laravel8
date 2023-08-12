@@ -38,7 +38,7 @@
                     </div>
                 @endif
 
-                <form autocomplete='off' action="{{ route('admin.lockscreen') }}" method="post" class="form w-100" novalidate="novalidate" id="kt_sign_in_form">
+                <form autocomplete='off' action="{{ route('admin.unlockuser') }}" method="post" class="form w-100" novalidate="novalidate" id="kt_sign_in_form">
                     {{ csrf_field() }}
                     {{ method_field('POST') }}
 
@@ -71,12 +71,12 @@
                     </div>
 
                     <div class="d-flex flex-wrap justify-content-center pb-lg-0">
-                        <button type="submit" id="kt_password_reset_submit" class="btn btn-lg btn-primary fw-bolder me-4">
+                        <a href="{{ route("admin.logout") }}" class="btn btn-lg btn-light-primary fw-bolder me-4">Sign In</a>
+                        <button type="submit" id="kt_password_reset_submit" class="btn btn-lg btn-primary fw-bolder">
                             <span class="indicator-label">Submit</span>
                             <span class="indicator-progress">Please wait...
 									<span class="spinner-border spinner-border-sm align-middle ms-2"></span></span>
                         </button>
-                        <a href="{{ route("admin.logout") }}" class="btn btn-lg btn-light-primary fw-bolder">Sign In</a>
                     </div>
                 </form>
             </div>

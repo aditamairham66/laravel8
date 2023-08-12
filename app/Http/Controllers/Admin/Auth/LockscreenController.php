@@ -36,7 +36,7 @@ class LockscreenController extends Controller
     public function postLockscreen(Request $request)
     {
         // users id
-        $usersId = $this->auth()->id;
+        $usersId = self::auth()->id;
 
         // find users
         $findUsers = $this->table->model->find($usersId);
@@ -59,8 +59,8 @@ class LockscreenController extends Controller
      */
     public function getLockUser(Request $request)
     {
-        if (!$this->auth()->id) {
-            // destroy all session
+        if (empty(self::auth()->id)) {
+            // destroy auth
             Session::flush();
 
             return redirect(adminRoute('lockscreen'))

@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Http\Middleware\Admin\AuthenticationMiddleware;
+use App\Http\Middleware\Admin\NonAuthenticationMiddleware;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 use Illuminate\Http\Request;
@@ -49,7 +50,10 @@ class RouteServiceProvider extends ServiceProvider
                 ->group(base_path('routes/web.php'));
 
             Route::prefix('admin')
-                ->middleware('web')
+                ->middleware([
+                    'web',
+                    NonAuthenticationMiddleware::class,
+                ])
                 ->namespace($this->namespace)
                 ->group(base_path('routes/admin.php'));
 
