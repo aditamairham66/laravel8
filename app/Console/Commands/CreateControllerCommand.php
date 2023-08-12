@@ -65,7 +65,7 @@ class CreateControllerCommand extends Command
         $className = str_replace(['controller', 'Controller', 'controllers', 'Controllers'], '', $endPath);
         $className = Str::studly($className);
         // get table name
-        $getTable = Str::snake($className);
+        $getTable = Str::camel($className);
 
         if ($isWithTable == "yes") {
             // create model
