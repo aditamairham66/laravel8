@@ -41,7 +41,8 @@ class NonAuthenticationMiddleware
             $this->decode($token);
         } catch (\Firebase\JWT\ExpiredException $th) {
             // catch error expired token
-            $this->res->error($th->getMessage(), 401);
+//            $this->res->error($th->getMessage(), 401);
+            $this->res->error("Token Expired", 401);
         } catch (\Throwable $th) {
             // catch error token
             $this->res->error($th->getMessage(), ($th->getCode()?$th->getCode():400));
