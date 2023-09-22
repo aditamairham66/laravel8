@@ -20,7 +20,7 @@ class EditCmsUsersRequest extends FormRequest
             "email" => [
                 "required",
                 "email",
-                Rule::unique('cms_users', 'email')->ignore($this->route()->parameter('one'))
+                Rule::unique('cms_users', 'email')->ignore($this->route()->parameter('request'))
             ],
             "photo" => "nullable|image|max:1000",
             "password" => [

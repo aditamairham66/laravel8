@@ -4,10 +4,12 @@ namespace App\Http\Controllers\Admin;
 
 use App\Helpers\Upload;
 use App\Http\Controllers\Controller;
+use App\Traits\Admin\Authentication;
 use Illuminate\Http\Request;
 
 class BaseController extends Controller
 {
+    use Authentication;
     /**
      * private property
      */
@@ -105,6 +107,14 @@ class BaseController extends Controller
         }
 
         if ($buttonName == "delete") {
+            if (in_array(self::auth()->id, $listId)) {
+                return redirect(adminMainRoute(''))
+                    ->with([
+                        'message' => "You cannot delete your own account.",
+                        'message_type' => 'danger'
+                    ]);
+            }
+
             $this->get('table')->model->newQuery()
                 ->whereIn('id', $listId)
                 ->delete();
