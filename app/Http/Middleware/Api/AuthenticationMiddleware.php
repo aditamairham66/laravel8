@@ -29,7 +29,7 @@ class AuthenticationMiddleware
     public function handle(Request $request, Closure $next)
     {
         if(!$this->auth()->id) {
-            $this->res->error('Users authorization is invalid, please login first !', 401);
+            $this->res->error('Users authorization is invalid, please login first !', 400);
         }
         return $next($request);
     }
