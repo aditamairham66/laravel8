@@ -21,7 +21,7 @@ class AuthenticationMiddleware
     public function handle(Request $request, Closure $next)
     {
         if (empty(self::auth()->id)) {
-            return redirect()->action('Admin\Auth\LoginController@getIndex')
+            return redirect()->action('App\Http\Controllers\Admin\Auth\LoginController@getIndex')
                 ->with([
                     'message' => "You must login first !"
                 ]);
@@ -29,7 +29,7 @@ class AuthenticationMiddleware
 
         if (!empty(self::auth()->id)) {
             if ($request->is('/admin/lockscreen') || Session::get('lockscreen') == 1) {
-                return redirect('/admin/lockscreen');
+                return redirect()->action('App\Http\Controllers\Admin\Auth\LockscreenController@getIndex');
             }
         }
 
