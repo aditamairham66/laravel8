@@ -81,9 +81,10 @@ class {class_name}Controller extends BaseController
      */
     public function postAdd(Add{class_name}Request $request)
     {
+        {addParams}
+
         $save = $this->table->model;
         {addField}
-        // add params here
         $save->save();
 
         return redirect(adminMainRoute(''))
@@ -113,9 +114,10 @@ class {class_name}Controller extends BaseController
      */
     public function postEdit(Edit{class_name}Request $request, $id)
     {
+        {editParams}
+
         $save = $this->table->model->find($id);
         {editField}
-        // add params here
         $save->save();
 
         return redirect(adminMainRoute(''))

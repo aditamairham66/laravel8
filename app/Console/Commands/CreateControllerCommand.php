@@ -100,7 +100,9 @@ class CreateControllerCommand extends Command
         if ($type == "admin") {
             $fieldTable = $this->fieldTable($getTable);
             $classField = implode("\n", $fieldTable->class);
+            $addParams = implode("\n", $fieldTable->params);
             $addField = $fieldTable->code;
+            $editParams = implode("\n", $fieldTable->params);
             $editField = $fieldTable->code;
             // get base template repositories
             $getContentControllerAdmin= file_get_contents(__DIR__.'/stub/controller/controller_admin.blade.php.stub');
@@ -109,11 +111,13 @@ class CreateControllerCommand extends Command
             // change {class_name}
             $getContentControllerAdmin = str_replace('{class_name}', $className, $getContentControllerAdmin);
             // change {file_name}
-            $getContentControllerAdmin = str_replace('{file_name}', $getTable, $getContentControllerAdmin);
+            $getContentControllerAdmin = str_replace('{file_name}', Str::camel(Str::studly($className)), $getContentControllerAdmin);
             $getContentControllerAdmin = str_replace('{table_class}', Str::studly($getTable), $getContentControllerAdmin);
             // change field
             $getContentControllerAdmin = str_replace('{classField}', $classField, $getContentControllerAdmin);
+            $getContentControllerAdmin = str_replace('{addParams}', $addParams, $getContentControllerAdmin);
             $getContentControllerAdmin = str_replace('{addField}', $addField, $getContentControllerAdmin);
+            $getContentControllerAdmin = str_replace('{editParams}', $editParams, $getContentControllerAdmin);
             $getContentControllerAdmin = str_replace('{editField}', $editField, $getContentControllerAdmin);
             // create repositories interfaces
             if(file_exists("$pathController\\$className"."Controller.php")) {
@@ -140,6 +144,9 @@ class CreateControllerCommand extends Command
                 $this->info($className." controller already created!");
             }else{
                 file_put_contents("$pathController\\$className"."Controller.php", $getContentControllerCommon);
+                $this->call(FormatCode::class, [
+                    'file' => "$pathController\\$className"."Controller.php"
+                ]);
                 $this->info($className." controller has been created!");
             }
         }
@@ -156,6 +163,9 @@ class CreateControllerCommand extends Command
                 $this->info($className." controller already created!");
             }else{
                 file_put_contents("$pathController\\$className"."Controller.php", $getContentControllerCommon);
+                $this->call(FormatCode::class, [
+                    'file' => "$pathController\\$className"."Controller.php"
+                ]);
                 $this->info($className." controller has been created!");
             }
         }
@@ -172,28 +182,31 @@ class CreateControllerCommand extends Command
 
         $code = "";
         $class = [];
+        $params = [];
         foreach ($fieldTable as $row) {
             if (in_array($row, ['image', 'photo'])) {
-                $code .= "\$".$row." = Upload::move('$row', 'profile', 'Yes'); \n";
+                $class[] = "use App\Helpers\Upload;";
+
+                $params[] = "\$".$row." = Upload::move('$row', 'profile', 'Yes');";
                 $code .= "if (\$".$row.") { \n";
                 $code .= "\$save->".$row." = \$".$row."; \n";
                 $code .= "} \n";
 
-                $class[] = "use App\Helpers\Upload;";
             } elseif ($row == "password") {
+                $class[] = "use Illuminate\Support\Facades\Hash;";
+
                 $code .= "if (\$save->".$row.") { \n";
                 $code .= "\$save->".$row." = Hash::make(\$request->".$row."); \n";
                 $code .= "} \n";
-
-                $class[] = "use Illuminate\Support\Facades\Hash;";
             } else {
                 $code .= "\$save->".$row."; \n";
             }
         }
 
         return (object) [
-            "code" => $code,
             "class" => $class,
+            "params" => $params,
+            "code" => $code,
         ];
     }
 
