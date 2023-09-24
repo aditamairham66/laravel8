@@ -38,7 +38,8 @@ class ModuleGeneratorController extends Controller
         $ta = Artisan::call(CreateControllerCommand::class, [
             'name' => "Admin\\$name",
             'type' => "admin",
-            'table' => $table,
+            '--tableName' => $table,
+            '--withTable' => "yes",
         ]);
         dd("Admin\\$name", $request->all(), $ta);
 

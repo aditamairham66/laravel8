@@ -6,9 +6,10 @@ use App\Http\Controllers\Admin\BaseController;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\{class_name}\Add{class_name}Request;
 use App\Http\Requests\Admin\{class_name}\Edit{class_name}Request;
-use App\Repositories\Table\{class_name}\{class_name}Repositories;
+use App\Repositories\Table\{table_class}\{table_class}Repositories;
 use App\Traits\Admin\Authentication;
 use Illuminate\Http\Request;
+{classField}
 
 class {class_name}Controller extends BaseController
 {
@@ -81,7 +82,7 @@ class {class_name}Controller extends BaseController
     public function postAdd(Add{class_name}Request $request)
     {
         $save = $this->table->model;
-        {field_add}
+        {addField}
         // add params here
         $save->save();
 
@@ -113,7 +114,7 @@ class {class_name}Controller extends BaseController
     public function postEdit(Edit{class_name}Request $request, $id)
     {
         $save = $this->table->model->find($id);
-        {field_edit}
+        {editField}
         // add params here
         $save->save();
 

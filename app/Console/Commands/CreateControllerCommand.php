@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Str;
 
 class CreateControllerCommand extends Command
@@ -12,7 +13,7 @@ class CreateControllerCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'create:controller {name} {type=general} {table=""} {--withTable=no}';
+    protected $signature = 'create:controller {name} {type=general} {--tableName=""} {--withTable=no}';
 
     /**
      * The console command description.
@@ -40,7 +41,7 @@ class CreateControllerCommand extends Command
     {
         $getName = $this->argument("name");
         $getType= $this->argument("type");
-        $getTable= $this->argument("table");
+        $getTable= $this->option("tableName");
         $getWithTable= $this->option("withTable");
 
         $this->make($getName, $getType, $getTable, $getWithTable);
@@ -97,6 +98,10 @@ class CreateControllerCommand extends Command
         }
 
         if ($type == "admin") {
+            $fieldTable = $this->fieldTable($getTable);
+            $classField = implode("\n", $fieldTable->class);
+            $addField = $fieldTable->code;
+            $editField = $fieldTable->code;
             // get base template repositories
             $getContentControllerAdmin= file_get_contents(__DIR__.'/stub/controller/controller_admin.blade.php.stub');
             // change {path_class}
@@ -106,13 +111,21 @@ class CreateControllerCommand extends Command
             // change {file_name}
             $getContentControllerAdmin = str_replace('{file_name}', $getTable, $getContentControllerAdmin);
             $getContentControllerAdmin = str_replace('{table_class}', Str::studly($getTable), $getContentControllerAdmin);
+            // change field
+            $getContentControllerAdmin = str_replace('{classField}', $classField, $getContentControllerAdmin);
+            $getContentControllerAdmin = str_replace('{addField}', $addField, $getContentControllerAdmin);
+            $getContentControllerAdmin = str_replace('{editField}', $editField, $getContentControllerAdmin);
             // create repositories interfaces
             if(file_exists("$pathController\\$className"."Controller.php")) {
-                $this->info($className." controller already created!");
-            }else{
-                file_put_contents("$pathController\\$className"."Controller.php", $getContentControllerAdmin);
-                $this->info($className." controller has been created!");
+                unlink("$pathController\\$className"."Controller.php");
             }
+
+            file_put_contents("$pathController\\$className"."Controller.php", $getContentControllerAdmin);
+            
+            $this->call(FormatCode::class, [
+                'file' => "$pathController\\$className"."Controller.php"
+            ]);
+            $this->info($className." controller created!");
         }
 
         if ($type == "general") {
@@ -146,6 +159,42 @@ class CreateControllerCommand extends Command
                 $this->info($className." controller has been created!");
             }
         }
+    }
+
+    protected function fieldTable($tableName)
+    {
+        $columnTable = Schema::getColumnListing($tableName);
+        $fieldTable = collect($columnTable)
+            ->filter(function ($row) {
+                $except = ['id', 'created_at', 'updated_at', 'deleted_at'];
+                return in_array($row, $except) ? false : true;
+            });
+
+        $code = "";
+        $class = [];
+        foreach ($fieldTable as $row) {
+            if (in_array($row, ['image', 'photo'])) {
+                $code .= "\$".$row." = Upload::move('$row', 'profile', 'Yes'); \n";
+                $code .= "if (\$".$row.") { \n";
+                $code .= "\$save->".$row." = \$".$row."; \n";
+                $code .= "} \n";
+
+                $class[] = "use App\Helpers\Upload;";
+            } elseif ($row == "password") {
+                $code .= "if (\$save->".$row.") { \n";
+                $code .= "\$save->".$row." = Hash::make(\$request->".$row."); \n";
+                $code .= "} \n";
+
+                $class[] = "use Illuminate\Support\Facades\Hash;";
+            } else {
+                $code .= "\$save->".$row."; \n";
+            }
+        }
+
+        return (object) [
+            "code" => $code,
+            "class" => $class,
+        ];
     }
 
 }

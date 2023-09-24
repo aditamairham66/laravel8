@@ -6,19 +6,23 @@ use App\Http\Controllers\Admin\BaseController;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\UsersModule\AddUsersModuleRequest;
 use App\Http\Requests\Admin\UsersModule\EditUsersModuleRequest;
-use App\Repositories\Table\UsersModule\UsersModuleRepositories;
+use App\Repositories\Table\CmsUsers\CmsUsersRepositories;
 use App\Traits\Admin\Authentication;
 use Illuminate\Http\Request;
+use App\Helpers\Upload;
+use Illuminate\Support\Facades\Hash;
 
 class UsersModuleController extends BaseController
 {
     use Authentication;
 
-    private $table, $button, $buttonBulk, $buttonAction;
+    private $table;
+    private $button;
+    private $buttonBulk;
+    private $buttonAction;
     public function __construct(
-        UsersModuleRepositories $table
-    )
-    {
+        CmsUsersRepositories $table
+    ) {
         // set value to private property
         $this->set('table', $table);
         
@@ -81,6 +85,17 @@ class UsersModuleController extends BaseController
     public function postAdd(AddUsersModuleRequest $request)
     {
         $save = $this->table->model;
+        $save->cms_privileges_id;
+        $save->name;
+        $photo = Upload::move('photo', 'profile', 'Yes');
+        if ($photo) {
+            $save->photo = $photo;
+        }
+        $save->email;
+        if ($save->password) {
+            $save->password = Hash::make($request->password);
+        }
+
         // add params here
         $save->save();
 
@@ -112,6 +127,17 @@ class UsersModuleController extends BaseController
     public function postEdit(EditUsersModuleRequest $request, $id)
     {
         $save = $this->table->model->find($id);
+        $save->cms_privileges_id;
+        $save->name;
+        $photo = Upload::move('photo', 'profile', 'Yes');
+        if ($photo) {
+            $save->photo = $photo;
+        }
+        $save->email;
+        if ($save->password) {
+            $save->password = Hash::make($request->password);
+        }
+
         // add params here
         $save->save();
 
