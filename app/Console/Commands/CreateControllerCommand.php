@@ -199,7 +199,7 @@ class CreateControllerCommand extends Command
                 $code .= "\$save->".$row." = Hash::make(\$request->".$row."); \n";
                 $code .= "} \n";
             } else {
-                $code .= "\$save->".$row."; \n";
+                $code .= "\$save->".$row." = \$request->".$row."; \n";
             }
         }
 

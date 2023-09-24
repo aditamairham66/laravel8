@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Schema;
 
 class ModuleGeneratorController extends Controller
 {
-    public $cmsModuleRepositories;
+    private $cmsModuleRepositories;
     public function __construct(
         CmsModuleRepositories $cmsModuleRepositories
     )
@@ -38,8 +38,13 @@ class ModuleGeneratorController extends Controller
     function getStep2(Request $request) 
     {
         $id = $request->get('id');
+        $findModule = $this->cmsModuleRepositories->model->newQuery()
+            ->find($id);
+            
+        $column = Schema::getColumnListing($findModule->table_name);
         return view('admin.module.step2', compact(
-            "id"
+            "id",
+            "column"
         ));
     }
 
@@ -67,6 +72,7 @@ class ModuleGeneratorController extends Controller
         $saveModule->name = $request->name;
         $saveModule->icon = $request->icon;
         $saveModule->path = $request->path;
+        $saveModule->table_name = $table;
         $saveModule->controller = $name."Controller";
         $saveModule->type = "route";
         $saveModule->is_active = 1;

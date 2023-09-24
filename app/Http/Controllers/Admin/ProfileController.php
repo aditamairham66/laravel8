@@ -16,7 +16,7 @@ class ProfileController extends BaseController
 {
     use Authentication;
 
-    public $table, $button, $buttonBulk, $buttonAction, $cmsPrivilegesRepositories;
+    private $table, $button, $buttonBulk, $buttonAction, $cmsPrivilegesRepositories;
     public function __construct(
         CmsUsersRepositories $table,
         CmsPrivilegesRepositories $cmsPrivilegesRepositories

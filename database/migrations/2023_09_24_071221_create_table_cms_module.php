@@ -19,6 +19,7 @@ class CreateTableCmsModule extends Migration
             $table->string('name', 255)->nullable();
             $table->string('icon', 255)->nullable();
             $table->string('path', 255)->nullable();
+            $table->string('table_name', 255)->nullable();
             $table->string('controller', 255)->nullable();
             $table->string('type', 255)->nullable()->comment('route, menu');
             $table->integer('is_active')->default(0)->comment('0 = not active, 1 = is active');

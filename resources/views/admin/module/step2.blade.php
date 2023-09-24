@@ -41,6 +41,53 @@
     </li>
   </ul>
 
+  <div class="card">
+    <div class="card-header">
+        <h3 class="card-title">Table Display</h3>
+    </div>
+    <form method="post" action="{{ route('module-create.step3') }}">
+        {{csrf_field()}}
+        <input type="hidden" name="id" value="{{ $id }}">
+
+        <div class="card-body">
+            <table class="table-display table table-striped">
+                <thead>
+                <tr>
+                    <th>Column</th>
+                    <th>Name</th>
+                    <th colspan='2'>Join (Optional)</th>
+                    <th>CallbackPHP</th>
+                    <th width="90px">Width (px)</th>
+                    <th width='80px'>Image</th>
+                    <th width='80px'>Download</th>
+                    <th width="180px">Action</th>
+                </tr>
+                </thead>
+                <tbody>
+
+                </tbody>
+            </table>
+        </div>
+        <div class="card-footer">
+            <div align="d-flex justify-content-end">
+                <a 
+                    href="javascript:void(0);" 
+                    onclick="location.href='{{ route('module-create.step1', ['id' => $id]) }}'" 
+                    class="btn btn-default"
+                >&laquo; Back</a>
+                <input type="submit" class="btn btn-primary" value="Step 3 &raquo;">
+            </div>
+        </div>
+    </form>
+  </div>
+
 @endsection
 @push('bottom')
+@endpush
+@push('head')
+    <style>
+        .table-display tbody tr td {
+            position: relative;
+        }
+    </style>
 @endpush

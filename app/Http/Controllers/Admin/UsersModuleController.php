@@ -87,12 +87,12 @@ class UsersModuleController extends BaseController
         $photo = Upload::move('photo', 'profile', 'Yes');
 
         $save = $this->table->model;
-        $save->cms_privileges_id;
-        $save->name;
+        $save->cms_privileges_id = $request->cms_privileges_id;
+        $save->name = $request->name;
         if ($photo) {
             $save->photo = $photo;
         }
-        $save->email;
+        $save->email = $request->email;
         if ($save->password) {
             $save->password = Hash::make($request->password);
         }
@@ -129,12 +129,12 @@ class UsersModuleController extends BaseController
         $photo = Upload::move('photo', 'profile', 'Yes');
 
         $save = $this->table->model->find($id);
-        $save->cms_privileges_id;
-        $save->name;
+        $save->cms_privileges_id = $request->cms_privileges_id;
+        $save->name = $request->name;
         if ($photo) {
             $save->photo = $photo;
         }
-        $save->email;
+        $save->email = $request->email;
         if ($save->password) {
             $save->password = Hash::make($request->password);
         }
