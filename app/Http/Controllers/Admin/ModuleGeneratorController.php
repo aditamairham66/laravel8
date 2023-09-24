@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Console\Commands\CreateControllerCommand;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Schema;
 
 class ModuleGeneratorController extends Controller
@@ -24,6 +27,22 @@ class ModuleGeneratorController extends Controller
     function getStep2(Request $request) 
     {
         return view('admin.module.step1');
+    }
+
+    function postStep2(Request $request)
+    {
+        $table = $request->table;
+        $name = Str::studly($request->name);
+
+        // create model
+        $ta = Artisan::call(CreateControllerCommand::class, [
+            'name' => "Admin\\$name",
+            'type' => "admin",
+            'table' => $table,
+        ]);
+        dd("Admin\\$name", $request->all(), $ta);
+
+        return redirect()->route('admin.step2');
     }
 
     function getStep3(Request $request) 

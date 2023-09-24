@@ -12,7 +12,7 @@ class CreateControllerCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'create:controller {name} {type=general} {--withTable=no}';
+    protected $signature = 'create:controller {name} {type=general} {table=""} {--withTable=no}';
 
     /**
      * The console command description.
@@ -40,9 +40,10 @@ class CreateControllerCommand extends Command
     {
         $getName = $this->argument("name");
         $getType= $this->argument("type");
+        $getTable= $this->argument("table");
         $getWithTable= $this->option("withTable");
 
-        $this->make($getName, $getType, $getWithTable);
+        $this->make($getName, $getType, $getTable, $getWithTable);
     }
 
     protected function appPath($path)
@@ -54,7 +55,7 @@ class CreateControllerCommand extends Command
         }
     }
 
-    protected function make($name, $type, $isWithTable)
+    protected function make($name, $type, $getTable, $isWithTable)
     {
         $listPath = explode('\\', $name);
         // get name controller
@@ -65,7 +66,9 @@ class CreateControllerCommand extends Command
         $className = str_replace(['controller', 'Controller', 'controllers', 'Controllers'], '', $endPath);
         $className = Str::studly($className);
         // get table name
-        $getTable = Str::camel($className);
+        if (empty($getTable)) {
+            $getTable = Str::camel($className);
+        }
 
         if ($isWithTable == "yes") {
             // create model
@@ -102,6 +105,7 @@ class CreateControllerCommand extends Command
             $getContentControllerAdmin = str_replace('{class_name}', $className, $getContentControllerAdmin);
             // change {file_name}
             $getContentControllerAdmin = str_replace('{file_name}', $getTable, $getContentControllerAdmin);
+            $getContentControllerAdmin = str_replace('{table_class}', Str::studly($getTable), $getContentControllerAdmin);
             // create repositories interfaces
             if(file_exists("$pathController\\$className"."Controller.php")) {
                 $this->info($className." controller already created!");

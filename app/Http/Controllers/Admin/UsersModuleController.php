@@ -1,22 +1,22 @@
 <?php
 
-namespace App\Http\Controllers\{path_class};
+namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Admin\BaseController;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Admin\{class_name}\Add{class_name}Request;
-use App\Http\Requests\Admin\{class_name}\Edit{class_name}Request;
-use App\Repositories\Table\{class_name}\{class_name}Repositories;
+use App\Http\Requests\Admin\UsersModule\AddUsersModuleRequest;
+use App\Http\Requests\Admin\UsersModule\EditUsersModuleRequest;
+use App\Repositories\Table\UsersModule\UsersModuleRepositories;
 use App\Traits\Admin\Authentication;
 use Illuminate\Http\Request;
 
-class {class_name}Controller extends BaseController
+class UsersModuleController extends BaseController
 {
     use Authentication;
 
     private $table, $button, $buttonBulk, $buttonAction;
     public function __construct(
-        {table_class}Repositories $table
+        UsersModuleRepositories $table
     )
     {
         // set value to private property
@@ -38,19 +38,19 @@ class {class_name}Controller extends BaseController
     }
 
     /**
-     * view {file_name} form
+     * view cms_users form
      */
     public function getIndex(Request $request)
     {
         $limit = $request->query('limit', 10);
         $search = $request->query('q');
 
-        $page_title = "{class_name}";
+        $page_title = "UsersModule";
         $result = $this->table->getPaginated($search, $limit);
         $button = $this->button;
         $buttonBulk = $this->buttonBulk;
         $buttonAction = $this->buttonAction;
-        return view('admin.page.{file_name}.index', compact(
+        return view('admin.page.cms_users.index', compact(
             'page_title',
             'result',
             'limit',
@@ -61,14 +61,14 @@ class {class_name}Controller extends BaseController
     }
 
     /**
-     * view {file_name} form
+     * view cms_users form
      */
     public function getAdd()
     {
-        $page_title = "Add {class_name}";
+        $page_title = "Add UsersModule";
         $form = $this->table->model;
         $link = adminMainRoute("add");
-        return view('admin.page.{file_name}.form', compact(
+        return view('admin.page.cms_users.form', compact(
             'page_title',
             'form',
             'link'
@@ -76,12 +76,11 @@ class {class_name}Controller extends BaseController
     }
 
     /**
-     * add {file_name} method
+     * add cms_users method
      */
-    public function postAdd(Add{class_name}Request $request)
+    public function postAdd(AddUsersModuleRequest $request)
     {
         $save = $this->table->model;
-        {field_add}
         // add params here
         $save->save();
 
@@ -93,14 +92,14 @@ class {class_name}Controller extends BaseController
     }
 
     /**
-     * view {file_name} form
+     * view cms_users form
      */
     public function getEdit($id)
     {
-        $page_title = "Edit {class_name}";
+        $page_title = "Edit UsersModule";
         $form = $this->table->model->find($id);
         $link = adminMainRoute("edit/$id");
-        return view('admin.page.{file_name}.form', compact(
+        return view('admin.page.cms_users.form', compact(
             'page_title',
             'form',
             'link'
@@ -108,12 +107,11 @@ class {class_name}Controller extends BaseController
     }
 
     /**
-     * edit {file_name} method
+     * edit cms_users method
      */
-    public function postEdit(Edit{class_name}Request $request, $id)
+    public function postEdit(EditUsersModuleRequest $request, $id)
     {
         $save = $this->table->model->find($id);
-        {field_edit}
         // add params here
         $save->save();
 
@@ -125,14 +123,14 @@ class {class_name}Controller extends BaseController
     }
 
     /**
-     * view {file_name} form
+     * view cms_users form
      */
     public function getDetail($id)
     {
-        $page_title = "Detail {class_name}";
+        $page_title = "Detail UsersModule";
         $form = $this->table->model->find($id);
         $link = adminMainRoute("");
-        return view('admin.page.{file_name}.detail', compact(
+        return view('admin.page.cms_users.detail', compact(
             'page_title',
             'form',
             'link'

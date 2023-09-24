@@ -84,7 +84,7 @@ class CreateModuleCommand extends Command
                 $y = [];
                 $y['name'] = $row;
                 $y['type'] = Schema::getColumnType($tableName, $row);
-                $y['isTable'] = Str::contains($row, ['_id', 'id_']) ? true : false;
+                $y['isHaveParent'] = Str::contains($row, ['_id', 'id_']) ? true : false;
                 return $y;
             });
 
