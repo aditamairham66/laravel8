@@ -47,8 +47,6 @@
         </div>
         <form method="post" action="{{ route('module-create.step2') }}">
             {{ csrf_field() }}
-            <input type="hidden" name="id" value="">
-
             <div class="card-body">
                 <div class="form-group mb-10">
                     <label for="" class="form-label col-sm-2">Table</label>
@@ -60,7 +58,6 @@
                             >{{ $rowTable }}</option>
                         @endforeach
                     </select>
-                    <div class="text-muted">Do not use cms_* as prefix on your tables name</div>
                 </div>
                 <div class="form-group mb-10">
                     <label for="" class="form-label col-sm-2">Module Name</label>
@@ -68,8 +65,8 @@
                 </div>
                 <div class="form-group mb-10">
                     <label for="" class="form-label col-sm-2">Icon</label>
-                    <select name="icon" id="icon" required class="form-select form-select-solid" data-control="select2">
-                        
+                    <select name="icon" id="icon" required class="form-select form-select-solid">
+                        @include('admin.module.component.icon.option')
                     </select>
                 </div>
                 <div class="form-group mb-10">
@@ -88,3 +85,32 @@
     </div>
 
 @endsection
+@push('bottom')
+    <script>
+        // Format options
+        const format = (item) => {
+            if (!item.id) {
+                return item.text;
+            }
+
+            const span = $("<span>", {
+                text: `${item.text}`
+            });
+            span.prepend(`
+                <i class="${item.element.getAttribute('data-icon')} text-dark fs-1"></i>&nbsp; 
+            `);
+            return span;
+        }
+
+        $('#icon').select2({
+            templateResult: function (item) {
+                return format(item);
+            }
+        });
+
+        $('select[name=table]').change(function () {
+            const v = $(this).val().replace(".", "_");
+            $('input[name=path]').val(v);
+        })
+    </script>
+@endpush
