@@ -33,7 +33,7 @@ class FormatCode extends Command
         ]);
 
         $process->run();
-        // dd($process->getOutput());
+        // dd($process->getOutput(), $filePath);
 
         if ($process->isSuccessful()) {
             $this->info("Code in $filePath has been formatted.");

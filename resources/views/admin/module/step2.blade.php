@@ -61,6 +61,7 @@
                 </tr>
                 </thead>
                 <tbody>
+                @foreach ($column as $row)
                 <tr>
                     <td>
                         <input 
@@ -69,7 +70,7 @@
                             onclick='showColumnSuggest(this)' 
                             onKeyUp='showColumnSuggestLike(this)' 
                             placeholder='Column Name' 
-                            value=''
+                            value='{{ $row->label }}'
                         />
                     </td>
                     <td>
@@ -79,7 +80,7 @@
                             onclick='showNameSuggest(this)' 
                             onKeyUp='showNameSuggestLike(this)'
                             placeholder='Field Name' 
-                            value=''
+                            value='{{ $row->name }}'
                         />
                     </td>
                     <td>
@@ -101,6 +102,7 @@
                         <a href="javascript:void(0)" class="btn btn-icon btn-sm btn-success btn-down"><i class='fa fa-arrow-down'></i></a>
                     </td>
                 </tr>
+                @endforeach
                 </tbody>
             </table>
         </div>
@@ -161,6 +163,9 @@
         `;
         tr_parent.after(clone);
     })
+
+    // init row
+    $('.btn-plus').last().click();
 
     $(document).mouseup(function (e) {
         var container = $(".sub");

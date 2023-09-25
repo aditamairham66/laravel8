@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Console\Commands\CreateControllerCommand;
+use App\Console\Commands\CreateModuleCommand;
 use App\Http\Controllers\Controller;
 use App\Repositories\Table\CmsModule\CmsModuleRepositories;
 use Illuminate\Http\Request;
@@ -41,7 +42,17 @@ class ModuleGeneratorController extends Controller
         $findModule = $this->cmsModuleRepositories->model->newQuery()
             ->find($id);
             
-        $column = Schema::getColumnListing($findModule->table_name);
+        $column = collect(Schema::getColumnListing($findModule->table_name))
+            ->filter(function ($row) {
+                $except = ['id', 'created_at', 'updated_at', 'deleted_at', 'password'];
+                return !in_array($row, $except);
+            })
+            ->map(function ($row) {
+                return (object) [
+                    "label" => Str::title(str_replace(['_'], ' ', $row)),
+                    "name" => $row,
+                ];
+            });
         return view('admin.module.step2', compact(
             "id",
             "column"
@@ -90,6 +101,41 @@ class ModuleGeneratorController extends Controller
         return view('admin.module.step1', compact(
             "id"
         ));
+    }
+
+    public function postStep3(Request $request)
+    {
+        $id = $request->id;
+        $findModule = $this->cmsModuleRepositories->model->newQuery()
+            ->find($id);
+
+        // Artisan::call(CreateControllerCommand::class, [
+        //     'name' => "Admin\\$findModule->name",
+        //     'type' => "admin",
+        //     '--tableName' => $findModule->table_name,
+        //     '--withTable' => "yes",
+        // ]);
+
+        Artisan::call(CreateModuleCommand::class, [
+            'name' => $findModule->name,
+            '--tableName' => $findModule->table_name,
+            '--column' => collect(request('name'))
+                ->filter(function ($row) {
+                    return !in_array($row, ["", null]);
+                })
+                ->map(function ($row, $i) use ($findModule) {
+                    return (object) [
+                        "label" => request('column')[$i],
+                        "name" => $row,
+                        "is_image" => request('is_image')[$i],
+                        "is_download" => request('is_download')[$i],
+                        "type" => Schema::getColumnType($findModule->table_name, $row),
+                        "isHaveParent" => Str::contains($row, ['_id', 'id_']) ? true : false,
+                    ];
+                }),
+        ]);
+
+        dd($request->all());
     }
 
 }
