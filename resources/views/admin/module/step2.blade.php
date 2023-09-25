@@ -114,6 +114,9 @@
 
 @endsection
 @push('bottom')
+  <script>
+    
+  </script>
 @endpush
 @push('head')
     <style>
