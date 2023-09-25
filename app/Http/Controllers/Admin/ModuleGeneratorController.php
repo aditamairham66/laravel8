@@ -109,12 +109,12 @@ class ModuleGeneratorController extends Controller
         $findModule = $this->cmsModuleRepositories->model->newQuery()
             ->find($id);
 
-        // Artisan::call(CreateControllerCommand::class, [
-        //     'name' => "Admin\\$findModule->name",
-        //     'type' => "admin",
-        //     '--tableName' => $findModule->table_name,
-        //     '--withTable' => "yes",
-        // ]);
+        Artisan::call(CreateControllerCommand::class, [
+            'name' => "Admin\\$findModule->name",
+            'type' => "admin",
+            '--tableName' => $findModule->table_name,
+            '--withTable' => "yes",
+        ]);
 
         Artisan::call(CreateModuleCommand::class, [
             'name' => $findModule->name,

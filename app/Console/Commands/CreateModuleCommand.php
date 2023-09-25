@@ -115,9 +115,16 @@ class CreateModuleCommand extends Command
             ->map(function ($row) {
                 return "<th>$row->label</th>";
             })->toArray();
-        $labelTable = implode("\n", $labelTable);
+        $labelTable = implode(PHP_EOL, $labelTable);
+        $labelTable = collect(explode(PHP_EOL, $labelTable))->map(function ($row) {
+            return "\t\t\t\t" . $row;
+        })->implode(PHP_EOL);
         $fieldTable = $this->nameTable($getColumn);
-        $columnTable = implode("\n", $fieldTable->code);
+        $columnTable = implode(PHP_EOL, $fieldTable->code);
+        $columnTable = collect(explode(PHP_EOL, $columnTable))->map(function ($row) {
+            return "\t\t\t\t\t" . $row;
+        })->implode(PHP_EOL);
+
         // get base template module
         $getContentModuleIndex = file_get_contents(__DIR__.'/stub/module/index.blade.php.stub');
         // change field
@@ -130,9 +137,6 @@ class CreateModuleCommand extends Command
 
         file_put_contents("$pathView\\"."index.blade.php", $getContentModuleIndex);
         
-        $this->call(FormatCode::class, [
-            'file' => "$pathView\\"."index.blade.php"
-        ]);
         $this->info($pathName." index blade created!");
         dd(Str::studly(Str::camel($tableName)));
     }

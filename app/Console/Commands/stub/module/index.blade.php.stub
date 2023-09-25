@@ -1,6 +1,5 @@
 @extends('admin.layout.table.index')
 @section('table')
-
     <div class="table-responsive">
         <table id="table_dashboard" class="table table-hover table-rounded table-striped gs-4 gy-4 gx-4">
             <thead>
@@ -8,7 +7,7 @@
                 <th>
                     <input type="checkbox" id="checkall">
                 </th>
-                [columnName]
+[columnName]
                 <th style="text-align:right">Action</th>
             </tr>
             </thead>
@@ -23,7 +22,7 @@
                     <td>
                         <input type="checkbox" class="checkbox" name="checkbox[]" value="{{ $rowRes->id }}">
                     </td>
-                    [column]
+[column]
                     <td>
                         @include('admin.layout.table.action', [
                             "buttonAction" => $buttonAction,
@@ -38,5 +37,4 @@
             </tbody>
         </table>
     </div>
-
 @endsection

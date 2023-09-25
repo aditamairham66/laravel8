@@ -28,12 +28,13 @@ class FormatCode extends Command
         $process = new Process([
             $fixerPath, 'fix', $filePath,
             '--rules=@PSR2',
+            '--rules=spacing',
             '--using-cache=no',
             // '--quiet',
         ]);
 
         $process->run();
-        // dd($process->getOutput(), $filePath);
+        // dd($process->getOutput());
 
         if ($process->isSuccessful()) {
             $this->info("Code in $filePath has been formatted.");

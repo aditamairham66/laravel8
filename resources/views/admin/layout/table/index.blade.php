@@ -118,9 +118,9 @@
                     <div class="col-sm-12 col-md-7 d-flex align-items-center justify-content-end justify-content-md-end">
                         <?php
                         $from = $result->count() ? ($result->perPage() * $result->currentPage() - $result->perPage() + 1) : 0;
-                        $to = $result->perPage() * $result->currentPage() - $result->perPage() + $result->count();
-                        $total = $result->total();
-                        ?>
+                                $to = $result->perPage() * $result->currentPage() - $result->perPage() + $result->count();
+                                $total = $result->total();
+                                ?>
                         <span class="text-dark pull-right me-5">
                             Total rows: {{ $from }} to {{ $to }} of {{ $total }}
                         </span>
