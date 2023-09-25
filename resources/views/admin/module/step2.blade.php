@@ -55,27 +55,58 @@
                 <tr>
                     <th>Column</th>
                     <th>Name</th>
-                    <th colspan='2'>Join (Optional)</th>
-                    <th>CallbackPHP</th>
-                    <th width="90px">Width (px)</th>
-                    <th width='80px'>Image</th>
+                    <th width='90px'>Image</th>
                     <th width='80px'>Download</th>
                     <th width="180px">Action</th>
                 </tr>
                 </thead>
                 <tbody>
-
+                <tr>
+                    <td>
+                        <input 
+                            type='text' name='column[]'
+                            class='column form-control notfocus' 
+                            onclick='showColumnSuggest(this)' 
+                            onKeyUp='showColumnSuggestLike(this)' 
+                            placeholder='Column Name' 
+                            value=''
+                        />
+                    </td>
+                    <td>
+                        <input 
+                            type='text' name='name[]' 
+                            class='name form-control notfocus' 
+                            onclick='showNameSuggest(this)' 
+                            onKeyUp='showNameSuggestLike(this)'
+                            placeholder='Field Name' 
+                            value=''
+                        />
+                    </td>
+                    <td>
+                        <select class='form-select is_image' name='is_image[]'>
+                            <option value='0'>N</option>
+                            <option value='1'>Y</option>
+                        </select>
+                    </td>
+                    <td>
+                        <select class='form-select is_download' name='is_download[]'>
+                            <option value='0'>N</option>
+                            <option value='1'>Y</option>
+                        </select>
+                    </td>
+                    <td>
+                        <a href="javascript:void(0)" class="btn btn-icon btn-sm btn-info btn-plus"><i class='fa fa-plus'></i></a>
+                        <a href="javascript:void(0)" class="btn btn-icon btn-sm btn-danger btn-delete"><i class='fa fa-trash'></i></a>
+                        <a href="javascript:void(0)" class="btn btn-icon btn-sm btn-success btn-up"><i class='fa fa-arrow-up'></i></a>
+                        <a href="javascript:void(0)" class="btn btn-icon btn-sm btn-success btn-down"><i class='fa fa-arrow-down'></i></a>
+                    </td>
+                </tr>
                 </tbody>
             </table>
         </div>
         <div class="card-footer">
-            <div align="d-flex justify-content-end">
-                <a 
-                    href="javascript:void(0);" 
-                    onclick="location.href='{{ route('module-create.step1', ['id' => $id]) }}'" 
-                    class="btn btn-default"
-                >&laquo; Back</a>
-                <input type="submit" class="btn btn-primary" value="Step 3 &raquo;">
+            <div class="d-flex justify-content-end">
+                <input type="submit" class="btn btn-primary" value="Next &raquo;">
             </div>
         </div>
     </form>
@@ -88,6 +119,27 @@
     <style>
         .table-display tbody tr td {
             position: relative;
+        }
+
+        .sub {
+            position: absolute;
+            top: inherit;
+            left: inherit;
+            padding: 0 0 0 0;
+            list-style-type: none;
+            height: 180px;
+            overflow: auto;
+            z-index: 1;
+        }
+        .sub > li {
+            padding: 5px;
+            background: #eae9e8;
+            cursor: pointer;
+            display: block;
+            width: 180px;
+        }
+        .sub > li:hover {
+            background: #ECF0F5;
         }
     </style>
 @endpush

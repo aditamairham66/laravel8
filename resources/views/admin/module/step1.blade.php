@@ -79,7 +79,7 @@
         <div class="card-footer">
             <div class='d-flex justify-content-end'>
                 <a class='btn btn-default' href=''> Back</a>
-                <input type="submit" class="btn btn-primary" value="Step 2 &raquo;">
+                <input type="submit" class="btn btn-primary" value="Next &raquo;">
             </div>
         </div>
     </form>
