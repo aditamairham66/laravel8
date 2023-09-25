@@ -98,7 +98,7 @@ class ModuleGeneratorController extends Controller
     function getStep3(Request $request) 
     {
         $id = $request->get('id');
-        return view('admin.module.step1', compact(
+        return view('admin.module.step3', compact(
             "id"
         ));
     }
@@ -135,7 +135,9 @@ class ModuleGeneratorController extends Controller
                 }),
         ]);
 
-        dd($request->all());
+        return redirect()->route('module-create.step3', [
+            "id" => $findModule->id,
+        ]);
     }
 
 }

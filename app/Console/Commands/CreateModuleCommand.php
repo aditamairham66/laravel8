@@ -138,7 +138,6 @@ class CreateModuleCommand extends Command
         file_put_contents("$pathView\\"."index.blade.php", $getContentModuleIndex);
         
         $this->info($pathName." index blade created!");
-        dd(Str::studly(Str::camel($tableName)));
     }
 
     protected function nameTable($column)
