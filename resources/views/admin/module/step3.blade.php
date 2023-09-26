@@ -87,14 +87,15 @@
                               />
                           </td>
                           <td>
-                              <input
-                                  type='text'
-                                  name='type[]'
-                                  class='form-control type'
-                                  placeholder="Input field type"
-                                  onclick='showTypeSuggest(this)'
-                                  onkeyup="showTypeSuggestLike(this)"
-                              />
+                              <select
+                                  name="type[]"
+                                  class="form-select type"
+                                  onclick='showNameSuggest(this)'
+                                  onkeyup="showNameSuggestLike(this)"
+                              >
+                                  <option value="">Input field type</option>
+                                  @include("admin.module.component.form.option")
+                              </select>
                           </td>
                           <td>
                               <input
@@ -128,6 +129,7 @@
 
 @endsection
 @push('bottom')
+
     <script>
         $(document).on('click', '.btn-plus', function () {
             var tr_parent = $(this).parent().parent('tr');
@@ -154,14 +156,15 @@
                       />
                   </td>
                   <td>
-                      <input
-                          type='text'
-                          name='type[]'
-                          class='form-control type'
-                          placeholder="Input field type"
-                          onclick='showTypeSuggest(this)'
-                          onkeyup="showTypeSuggestLike(this)"
-                      />
+                    <select
+                        name="type[]"
+                        class="form-select type"
+                        onclick='showNameSuggest(this)'
+                        onkeyup="showNameSuggestLike(this)"
+                    >
+                        <option value="">Input field type</option>
+                      @include("admin.module.component.form.option")
+                    </select>
                   </td>
                   <td>
                       <input
