@@ -13,7 +13,7 @@ class CreateControllerCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'create:controller {name} {type=general} {--tableName=""} {--withTable=no}';
+    protected $signature = 'create:controller {name} {type=general} {--tableName=} {--withTable=no} {--tableAction=}';
 
     /**
      * The console command description.
@@ -43,8 +43,9 @@ class CreateControllerCommand extends Command
         $getType= $this->argument("type");
         $getTable= $this->option("tableName");
         $getWithTable= $this->option("withTable");
+        $getTableAction= $this->option("tableAction");
 
-        $this->make($getName, $getType, $getTable, $getWithTable);
+        $this->make($getName, $getType, $getTable, $getWithTable, $getTableAction);
     }
 
     protected function appPath($path)
@@ -56,7 +57,7 @@ class CreateControllerCommand extends Command
         }
     }
 
-    protected function make($name, $type, $getTable, $isWithTable)
+    protected function make($name, $type, $getTable, $isWithTable, $getTableAction)
     {
         $listPath = explode('\\', $name);
         // get name controller
@@ -104,6 +105,8 @@ class CreateControllerCommand extends Command
             $addField = $fieldTable->code;
             $editParams = implode("\n", $fieldTable->params);
             $editField = $fieldTable->code;
+            if (empty($getTableAction)) $getTableAction = [];
+
             // get base template repositories
             $getContentControllerAdmin= file_get_contents(__DIR__.'/stub/controller/controller_admin.blade.php.stub');
             // change {path_class}
@@ -119,13 +122,14 @@ class CreateControllerCommand extends Command
             $getContentControllerAdmin = str_replace('{addField}', $addField, $getContentControllerAdmin);
             $getContentControllerAdmin = str_replace('{editParams}', $editParams, $getContentControllerAdmin);
             $getContentControllerAdmin = str_replace('{editField}', $editField, $getContentControllerAdmin);
+            $getContentControllerAdmin = str_replace('$actionList', var_export($getTableAction, true), $getContentControllerAdmin);
             // create repositories interfaces
             if(file_exists("$pathController\\$className"."Controller.php")) {
                 unlink("$pathController\\$className"."Controller.php");
             }
 
             file_put_contents("$pathController\\$className"."Controller.php", $getContentControllerAdmin);
-            
+
             $this->call(FormatCode::class, [
                 'file' => "$pathController\\$className"."Controller.php"
             ]);

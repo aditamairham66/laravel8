@@ -13,7 +13,7 @@
         </a>
     </li>
     <li class="nav-item me-0 mb-md-2">
-        <a class="nav-link btn btn-flex btn-active-primary" href="{{ route('module-create.step2', ['id' => $id]) }}">
+        <a class="nav-link btn btn-flex btn-active-primary" href="#">
             <span class="svg-icon svg-icon-2"><svg>...</svg></span>
             <span class="d-flex flex-column align-items-start">
                 <span class="fs-4 fw-bolder">Step 2</span>
@@ -22,7 +22,7 @@
         </a>
     </li>
     <li class="nav-item me-0 mb-md-2">
-        <a class="nav-link btn btn-flex btn-active-primary" href="{{ route('module-create.step3', ['id' => $id]) }}">
+        <a class="nav-link btn btn-flex btn-active-primary" href="#">
             <span class="svg-icon svg-icon-2"><svg>...</svg></span>
             <span class="d-flex flex-column align-items-start">
                 <span class="fs-4 fw-bolder">Step 3</span>
@@ -31,10 +31,10 @@
         </a>
     </li>
     <li class="nav-item me-0 mb-md-2">
-        <a class="nav-link btn btn-flex btn-active-primary" href="{{ route('module-create.step4', ['id' => $id]) }}">
+        <a class="nav-link btn btn-flex btn-active-primary" href="#">
             <span class="svg-icon svg-icon-2"><svg>...</svg></span>
             <span class="d-flex flex-column align-items-start">
-                <span class="fs-4 fw-bolder">Step 1</span>
+                <span class="fs-4 fw-bolder">Step 4</span>
                 <span class="fs-7">Configuration</span>
             </span>
         </a>

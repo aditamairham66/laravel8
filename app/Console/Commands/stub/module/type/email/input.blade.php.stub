@@ -1,6 +1,6 @@
 <x-field
     type="email"
-    required="$required"
-    columnName="$columnName"
-    column="$column"
+    is-required="$required"
+    column-name="$columnName"
+    column="{{ $form->$column }}"
 />

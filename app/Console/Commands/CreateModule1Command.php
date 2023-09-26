@@ -13,7 +13,7 @@ class CreateModule1Command extends Command
      *
      * @var string
      */
-    protected $signature = 'create:module-form {name} {--tableName=""} {--column=[]}';
+    protected $signature = 'create:module-form {name} {--tableName=} {--column=}';
 
     /**
      * The console command description.
@@ -85,7 +85,7 @@ class CreateModule1Command extends Command
                 })
                 ->map(function ($row, $i) use ($tableName) {
                     if (in_array($row, ['image', 'photo'])) {
-                        $type = "upload";
+                        $type = "file";
                     } elseif (in_array($row, ['desc', 'description'])) {
                         $type = "textarea";
                     } else {
@@ -101,6 +101,13 @@ class CreateModule1Command extends Command
                 });
         }
 
+
+        // make Repositories folder
+        $pathView = $this->viewPath("admin\page\\$pathName\\components");
+        if(!file_exists($pathView)) {
+            @mkdir($pathView, 0755);
+        }
+
         $html = "";
         foreach ($getColumn as $row) {
             $getContentField = file_get_contents(__DIR__."/stub/module/type/$row->type/input.blade.php.stub");
@@ -109,12 +116,11 @@ class CreateModule1Command extends Command
             $getContentField = str_replace('$required', $row->is_required ? "true" : "false", $getContentField);
             $html .= $getContentField;
         }
-        dd($getColumn, $html);
-
-        // make Repositories folder
-        $pathView = $this->viewPath("admin\page\\$pathName");
-        if(!file_exists($pathView)) {
-            @mkdir($pathView, 0755);
+        if(file_exists("$pathView\\field.blade.php")) {
+            unlink("$pathView\\field.blade.php");
         }
+        file_put_contents("$pathView\\field.blade.php", $html);
+
+        $this->info($pathName." \\components\\field.blade.php blade created!");
     }
 }

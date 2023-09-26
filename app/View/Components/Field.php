@@ -15,12 +15,14 @@ class Field extends Component
     public $isRequired;
     public $columnName;
     public $column;
-    public function __construct($type, $isRequired, $columnName, $column)
+    public $columnId;
+    public function __construct($type, $isRequired, $columnName, $column = null, $columnId = null)
     {
         $this->type = $type;
         $this->isRequired = $isRequired;
         $this->columnName = $columnName;
         $this->column = $column;
+        $this->columnId = $columnId;
     }
 
     /**

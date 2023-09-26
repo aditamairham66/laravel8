@@ -47,7 +47,7 @@ class ModuleGeneratorController extends Controller
             'name' => "Admin\\$name",
             'type' => "admin",
             '--tableName' => $table,
-            '--withTable' => "yes",
+            '--withTable' => "yes"
         ]);
 
         // delete old module
@@ -68,6 +68,21 @@ class ModuleGeneratorController extends Controller
         $saveModule->sorting = $this->cmsModuleRepositories->model->newQuery()->max('sorting') + 1;
         $saveModule->save();
 
+        $route = base_path('routes/adminRoute.php');
+        $getContentRoute = file_get_contents($route);
+        $pathController = "Admin\\$name"."Controller";
+        file_put_contents($route, $getContentRoute."routeController('/$request->path', '$pathController');");
+
+        Artisan::call(CreateModuleCommand::class, [
+            'name' => $saveModule->name,
+            '--tableName' => $saveModule->table_name,
+        ]);
+
+        Artisan::call(CreateModule1Command::class, [
+            'name' => $saveModule->name,
+            '--tableName' => $saveModule->table_name,
+        ]);
+
         return redirect()->route('module-create.step2', [
             "id" => $saveModule->id,
         ]);
@@ -81,8 +96,7 @@ class ModuleGeneratorController extends Controller
 
         $column = collect(Schema::getColumnListing($findModule->table_name))
             ->filter(function ($row) {
-                $except = ['id', 'created_at', 'updated_at', 'deleted_at', 'password'];
-                return !in_array($row, $except);
+                return !in_array($row, ['id', 'created_at', 'updated_at', 'deleted_at', 'password']);
             })
             ->map(function ($row) {
                 return (object) [
@@ -100,13 +114,6 @@ class ModuleGeneratorController extends Controller
     {
         $findModule = $this->cmsModuleRepositories->model->newQuery()
             ->find($request->id);
-
-        Artisan::call(CreateControllerCommand::class, [
-            'name' => "Admin\\$findModule->name",
-            'type' => "admin",
-            '--tableName' => $findModule->table_name,
-            '--withTable' => "yes",
-        ]);
 
         Artisan::call(CreateModuleCommand::class, [
             'name' => $findModule->name,
@@ -140,8 +147,7 @@ class ModuleGeneratorController extends Controller
 
         $column = collect(Schema::getColumnListing($findModule->table_name))
             ->filter(function ($row) {
-                $except = ['id', 'created_at', 'updated_at', 'deleted_at', 'password'];
-                return !in_array($row, $except);
+                return !in_array($row, ['id', 'created_at', 'updated_at', 'deleted_at']);
             })
             ->map(function ($row) {
                 return (object) [
@@ -177,7 +183,6 @@ class ModuleGeneratorController extends Controller
                     ];
                 }),
         ]);
-        dd($request->all());
 
         return redirect()->route('module-create.step4', [
             "id" => $findModule->id,
@@ -194,7 +199,29 @@ class ModuleGeneratorController extends Controller
 
     public function postStep4(Request $request)
     {
+        $findModule = $this->cmsModuleRepositories->model->newQuery()
+            ->find($request->id);
 
+        Artisan::call(CreateControllerCommand::class, [
+            'name' => "Admin\\$findModule->name",
+            'type' => "admin",
+            '--tableName' => $findModule->table_name,
+            '--withTable' => "yes",
+            '--tableAction' => [
+                "isAdd" => $request->button_add,
+                "isEdit" => $request->button_edit,
+                "isDelete" => $request->button_delete,
+                "isDetail" => $request->button_detail,
+                "isShow" => $request->button_show,
+                "isBulkButton" => $request->button_bulk_action,
+            ]
+        ]);
+
+        return redirect()->route('module-create.step1')
+            ->with([
+                "message_type" => 'success',
+                "message" => "Module created !."
+            ]);
     }
 
 }

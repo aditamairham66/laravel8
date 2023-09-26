@@ -1,6 +1,5 @@
 <x-field
-    type="number"
+    type="password"
     is-required="$required"
     column-name="$columnName"
-    column="{{ $form->$column }}"
 />

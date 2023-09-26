@@ -22,9 +22,9 @@ class {class_name}Controller extends BaseController
     {
         // set value to private property
         $this->set('table', $table);
-        
+
         $this->table = $table;
-        $this->button = $this->action();
+        $this->button = $this->action($actionList);
         $this->buttonBulk = [
             // ["type" => "type", "name" => "Name Text"],
         ];

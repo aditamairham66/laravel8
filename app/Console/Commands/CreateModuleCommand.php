@@ -14,7 +14,7 @@ class CreateModuleCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'create:module {name} {--tableName=""} {--column=[]}';
+    protected $signature = 'create:module {name} {--tableName=} {--column=}';
 
     /**
      * The console command description.
@@ -90,8 +90,7 @@ class CreateModuleCommand extends Command
             $columnTable = Schema::getColumnListing($tableName);
             $getColumn = collect($columnTable)
                 ->filter(function ($row) {
-                    $except = ['id', 'created_at', 'updated_at', 'deleted_at', 'password'];
-                    return in_array($row, $except) ? false : true;
+                    return !in_array($row, ['id', 'created_at', 'updated_at', 'deleted_at', 'password']);
                 })
                 ->map(function ($row, $i) use ($tableName) {
                     return (object) [
@@ -102,7 +101,7 @@ class CreateModuleCommand extends Command
                         "type" => Schema::getColumnType($tableName, $row),
                         "isHaveParent" => Str::contains($row, ['_id', 'id_']) ? true : false,
                     ];
-                });
+                })->toArray();
         }
 
         // make Repositories folder
@@ -131,20 +130,40 @@ class CreateModuleCommand extends Command
         $getContentModuleIndex = str_replace('[columnName]', $labelTable, $getContentModuleIndex);
         $getContentModuleIndex = str_replace('[column]', $columnTable, $getContentModuleIndex);
         // create repositories interfaces
-        if(file_exists("$pathView\\"."index.blade.php")) {
-            unlink("$pathView\\"."index.blade.php");
+        if(file_exists("$pathView\\index.blade.php")) {
+            unlink("$pathView\\index.blade.php");
         }
+        file_put_contents("$pathView\\index.blade.php", $getContentModuleIndex);
 
-        file_put_contents("$pathView\\"."index.blade.php", $getContentModuleIndex);
+        $getContentModuleIndex2 = file_get_contents(__DIR__.'/stub/module/form.blade.php.stub');
+        $getContentModuleIndex2 = str_replace('$pathName', $pathName, $getContentModuleIndex2);
+        if(file_exists("$pathView\\"."form.blade.php")) {
+            unlink("$pathView\\"."form.blade.php");
+        }
+        file_put_contents("$pathView\\"."form.blade.php", $getContentModuleIndex2);
 
-        $this->info($pathName." index blade created!");
+        $this->info($pathName." index.blade.php blade created!");
+        $this->info($pathName." form.blade.php blade created!");
     }
 
     protected function nameTable($column)
     {
         $code = [];
         foreach ($column as $row) {
-            $code[] = "<td>{{ \$rowRes->".$row->name." }}</td>";
+            if ($row->is_image == 1) {
+                $code[] = "<td>
+                \t\t<a
+                \t\t\tdata-fslightbox='lightbox-basic'
+                \t\t\trel='group_'
+                \t\t\ttitle='Self Photo: '
+                \t\t\thref='{{ asset(\$rowRes->".$row->name.") }}'
+                \t\t>
+                \t\t\t<img width='40px' height='40px' src='{{ asset(\$rowRes->".$row->name.") }}'>
+                \t\t</a>
+                \t</td> ";
+            } else {
+                $code[] = "<td>{{ \$rowRes->".$row->name." }}</td>";
+            }
         }
 
         return (object) [

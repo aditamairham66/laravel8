@@ -26,14 +26,16 @@ class FormatCode extends Command
         }
 
         $process = new Process([
-            $fixerPath, 'fix', $filePath,
-            '--rules=@PSR2',
+            $fixerPath,
+            'fix',
+            $filePath,
+            // '--rules=@PSR2',
             '--using-cache=no',
             // '--quiet',
         ]);
 
         $process->run();
-        // dd($process->getOutput());
+         // dd($process->getOutput(), $filePath);
 
         if ($process->isSuccessful()) {
             $this->info("Code in $filePath has been formatted.");
