@@ -1,5 +1,5 @@
 <x-field
-    type="upload"
+    type="file"
     required="$required"
     columnName="$columnName"
     column="$column"
