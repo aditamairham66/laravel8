@@ -1,20 +1,6 @@
-<div class="form-group mb-10">
-    <label
-        class="form-label col-sm-2 required"
-        title="this field required"
-        data-bs-toggle="tooltip"
-        data-bs-trigger="hover"
-        data-bs-dismiss="click"
-        data-bs-placement="left"
-    >$columnName</label>
-    <input
-        type="email" name="$column" id="$column"
-        class="form-control form-control-solid" placeholder="Please enter a valid email address"
-        value="{{ old('$column', (!empty($form->$column)?$form->$column:null)) }}"
-    >
-    <div class="fv-plugins-message-container invalid-feedback">
-        @error("$column")
-        <i class='fa fa-info-circle'></i> {{ $message }}
-        @enderror
-    </div>
-</div>
+<x-field
+    type="email"
+    required="$required"
+    columnName="$columnName"
+    column="$column"
+/>

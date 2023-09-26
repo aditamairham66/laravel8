@@ -1,21 +1,6 @@
-<div class="form-group mb-10">
-    <label
-        class="form-label col-sm-2 required"
-        title="this field required"
-        data-bs-toggle="tooltip"
-        data-bs-trigger="hover"
-        data-bs-dismiss="click"
-        data-bs-placement="left"
-    >$columnName</label>
-    <input
-        type="text" name="$column" id="$column"
-        placeholder="You can only enter the letter only"
-        class="form-control form-control-solid"
-        value="{{ old('$column', (!empty($form->$column)?$form->$column:null)) }}"
-    >
-    <div class="fv-plugins-message-container invalid-feedback">
-        @error("$column")
-        <i class='fa fa-info-circle'></i> {{ $message }}
-        @enderror
-    </div>
-</div>
+<x-field
+    type="text"
+    required="$required"
+    columnName="$columnName"
+    column="$column"
+/>
