@@ -8,7 +8,7 @@
                     <input type="checkbox" id="checkall">
                 </th>
 				<th>Name</th>
-				<th>Cms Privileges Id</th>
+				<th>Cms Privileges</th>
 				<th>Photo</th>
 				<th>Email</th>
                 <th style="text-align:right">Action</th>

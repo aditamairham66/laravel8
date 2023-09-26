@@ -3,18 +3,17 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Str;
 
-class CreateModuleCommand extends Command
+class CreateModule1Command extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'create:module {name} {--tableName=""} {--column=[]}';
+    protected $signature = 'create:module-form {name} {--tableName=""} {--column=[]}';
 
     /**
      * The console command description.
@@ -77,15 +76,6 @@ class CreateModuleCommand extends Command
             $this->info("$tableName is not found in database ".env('DB_DATABASE'));
         }
 
-        // create model
-        $this->call(CreateModelCommand::class, [
-            'table' => $tableName
-        ]);
-        // create service
-        $this->call(CreateServicesCommand::class, [
-            'table' => $tableName
-        ]);
-
         if (empty($getColumn)) {
             $columnTable = Schema::getColumnListing($tableName);
             $getColumn = collect($columnTable)
@@ -94,13 +84,18 @@ class CreateModuleCommand extends Command
                     return in_array($row, $except) ? false : true;
                 })
                 ->map(function ($row, $i) use ($tableName) {
+                    if (in_array($row, ['image', 'photo'])) {
+                        $type = "upload";
+                    } elseif (in_array($row, ['desc', 'description'])) {
+                        $type = "textarea";
+                    } else {
+                        $type = "text";
+                    }
                     return (object) [
                         "label" => Str::title(str_replace(['_'], ' ', $row)),
                         "name" => $row,
-                        "is_image" => (in_array($row, ['image', 'photo']) ? 1 : 0),
-                        "is_download" => 0,
-                        "type" => Schema::getColumnType($tableName, $row),
-                        "isHaveParent" => Str::contains($row, ['_id', 'id_']) ? true : false,
+                        "type" => $type,
+                        "validation" => "required",
                     ];
                 });
         }
@@ -110,45 +105,5 @@ class CreateModuleCommand extends Command
         if(!file_exists($pathView)) {
             @mkdir($pathView, 0755);
         }
-
-        $labelTable = collect($getColumn)
-            ->map(function ($row) {
-                return "<th>$row->label</th>";
-            })->toArray();
-        $labelTable = implode(PHP_EOL, $labelTable);
-        $labelTable = collect(explode(PHP_EOL, $labelTable))->map(function ($row) {
-            return "\t\t\t\t" . $row;
-        })->implode(PHP_EOL);
-        $fieldTable = $this->nameTable($getColumn);
-        $columnTable = implode(PHP_EOL, $fieldTable->code);
-        $columnTable = collect(explode(PHP_EOL, $columnTable))->map(function ($row) {
-            return "\t\t\t\t\t" . $row;
-        })->implode(PHP_EOL);
-
-        // get base template module
-        $getContentModuleIndex = file_get_contents(__DIR__.'/stub/module/index.blade.php.stub');
-        // change field
-        $getContentModuleIndex = str_replace('[columnName]', $labelTable, $getContentModuleIndex);
-        $getContentModuleIndex = str_replace('[column]', $columnTable, $getContentModuleIndex);
-        // create repositories interfaces
-        if(file_exists("$pathView\\"."index.blade.php")) {
-            unlink("$pathView\\"."index.blade.php");
-        }
-
-        file_put_contents("$pathView\\"."index.blade.php", $getContentModuleIndex);
-
-        $this->info($pathName." index blade created!");
-    }
-
-    protected function nameTable($column)
-    {
-        $code = [];
-        foreach ($column as $row) {
-            $code[] = "<td>{{ \$rowRes->".$row->name." }}</td>";
-        }
-
-        return (object) [
-            "code" => $code,
-        ];
     }
 }

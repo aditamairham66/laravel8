@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Console\Commands\CreateControllerCommand;
+use App\Console\Commands\CreateModule1Command;
 use App\Console\Commands\CreateModuleCommand;
 use App\Http\Controllers\Controller;
 use App\Repositories\Table\CmsModule\CmsModuleRepositories;
@@ -85,7 +86,7 @@ class ModuleGeneratorController extends Controller
             })
             ->map(function ($row) {
                 return (object) [
-                    "label" => Str::title(str_replace(['_'], ' ', $row)),
+                    "label" => Str::title(str_replace(['_', 'id'], [' ', ''], $row)),
                     "name" => $row,
                 ];
             });
@@ -144,7 +145,7 @@ class ModuleGeneratorController extends Controller
             })
             ->map(function ($row) {
                 return (object) [
-                    "label" => Str::title(str_replace(['_'], ' ', $row)),
+                    "label" => Str::title(str_replace(['_', 'id'], [' ', ''], $row)),
                     "name" => $row,
                 ];
             });
@@ -158,6 +159,24 @@ class ModuleGeneratorController extends Controller
     {
         $findModule = $this->cmsModuleRepositories->model->newQuery()
             ->find($request->id);
+
+        Artisan::call(CreateModule1Command::class, [
+            'name' => $findModule->name,
+            '--tableName' => $findModule->table_name,
+            '--column' => collect(request('name'))
+                ->filter(function ($row) {
+                    return !in_array($row, ["", null]);
+                })
+                ->map(function ($row, $i) {
+                    return (object) [
+                        "label" => request('label')[$i],
+                        "name" => $row,
+                        "type" => request('type')[$i],
+                        "validation" => request('validation')[$i],
+                    ];
+                }),
+        ]);
+        dd($request->all());
 
         return redirect()->route('module-create.step4', [
             "id" => $findModule->id,
