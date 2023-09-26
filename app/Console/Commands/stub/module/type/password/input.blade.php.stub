@@ -1,5 +1,6 @@
 <x-field
     type="password"
     is-required="$required"
-    column-name="$columnName"
+    label="$columnName"
+    column="$column"
 />

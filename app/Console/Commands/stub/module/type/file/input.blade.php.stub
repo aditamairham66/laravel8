@@ -1,7 +1,7 @@
-<x-field
-    type="file"
+<x-field-file
     is-required="$required"
-    column-name="$columnName"
-    column="{{ $form->$column }}"
+    label="$columnName"
+    column="$column"
     column-id="{{ $form->id }}"
+    file="{{ $form->$column }}"
 />

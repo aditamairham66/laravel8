@@ -1,6 +1,7 @@
 <x-field
     type="text"
     is-required="$required"
-    column-name="$columnName"
-    column="{{ $form->$column }}"
+    label="$columnName"
+    column="$column"
+    data="{{ $form->$column }}"
 />

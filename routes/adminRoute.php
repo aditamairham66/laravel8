@@ -19,4 +19,3 @@ Route::get('/', [DashboardController::class, 'getIndex']);
 routeController('/profile', 'Admin\ProfileController');
 routeController('/privileges', 'Admin\PrivilegesController');
 routeController('/notifications', 'Admin\CmsNotificationController');
-routeController('/cms_users', 'Admin\UsersModuleController');routeController('/cms_users', 'Admin\UsersModuleController');

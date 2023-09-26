@@ -71,7 +71,7 @@ class ModuleGeneratorController extends Controller
         $route = base_path('routes/adminRoute.php');
         $getContentRoute = file_get_contents($route);
         $pathController = "Admin\\$name"."Controller";
-        file_put_contents($route, $getContentRoute."routeController('/$request->path', '$pathController');");
+        file_put_contents($route, $getContentRoute."routeController('/$request->path', '$pathController');\n");
 
         Artisan::call(CreateModuleCommand::class, [
             'name' => $saveModule->name,
