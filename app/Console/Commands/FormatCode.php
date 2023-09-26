@@ -28,7 +28,6 @@ class FormatCode extends Command
         $process = new Process([
             $fixerPath, 'fix', $filePath,
             '--rules=@PSR2',
-            '--rules=spacing',
             '--using-cache=no',
             // '--quiet',
         ]);

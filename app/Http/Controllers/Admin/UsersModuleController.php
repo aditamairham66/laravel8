@@ -16,11 +16,13 @@ class UsersModuleController extends BaseController
 {
     use Authentication;
 
-    private $table, $button, $buttonBulk, $buttonAction;
+    private $table;
+    private $button;
+    private $buttonBulk;
+    private $buttonAction;
     public function __construct(
         CmsUsersRepositories $table
-    )
-    {
+    ) {
         // set value to private property
         $this->set('table', $table);
         
@@ -85,15 +87,15 @@ class UsersModuleController extends BaseController
         $photo = Upload::move('photo', 'profile', 'Yes');
 
         $save = $this->table->model;
-        $save->cms_privileges_id = $request->cms_privileges_id; 
-$save->name = $request->name; 
-if ($photo) { 
-$save->photo = $photo; 
-} 
-$save->email = $request->email; 
-if ($save->password) { 
-$save->password = Hash::make($request->password); 
-} 
+        $save->cms_privileges_id = $request->cms_privileges_id;
+        $save->name = $request->name;
+        if ($photo) {
+            $save->photo = $photo;
+        }
+        $save->email = $request->email;
+        if ($save->password) {
+            $save->password = Hash::make($request->password);
+        }
 
         $save->save();
 
@@ -127,15 +129,15 @@ $save->password = Hash::make($request->password);
         $photo = Upload::move('photo', 'profile', 'Yes');
 
         $save = $this->table->model->find($id);
-        $save->cms_privileges_id = $request->cms_privileges_id; 
-$save->name = $request->name; 
-if ($photo) { 
-$save->photo = $photo; 
-} 
-$save->email = $request->email; 
-if ($save->password) { 
-$save->password = Hash::make($request->password); 
-} 
+        $save->cms_privileges_id = $request->cms_privileges_id;
+        $save->name = $request->name;
+        if ($photo) {
+            $save->photo = $photo;
+        }
+        $save->email = $request->email;
+        if ($save->password) {
+            $save->password = Hash::make($request->password);
+        }
 
         $save->save();
 
