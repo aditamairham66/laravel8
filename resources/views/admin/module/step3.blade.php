@@ -90,8 +90,8 @@
                               <select
                                   name="type[]"
                                   class="form-select type"
-                                  onclick='showNameSuggest(this)'
-                                  onkeyup="showNameSuggestLike(this)"
+                                  onclick='showTypeSuggest(this)'
+                                  onkeyup="showTypeSuggestLike(this)"
                               >
                                   <option value="">Input field type</option>
                                   @include("admin.module.component.form.option")
