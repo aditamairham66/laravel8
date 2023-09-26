@@ -21,11 +21,11 @@ class ModuleGeneratorController extends Controller
         $this->cmsModuleRepositories = $cmsModuleRepositories;
     }
 
-    function getStep1(Request $request) 
+    function getStep1(Request $request)
     {
         $table = collect(Schema::getAllTables())
             ->filter(function ($row) {
-               return !in_array($row->Tables_in_laravel, ['migrations', 'cms_notification', 'cms_privileges', 'cms_module']); 
+               return !in_array($row->Tables_in_laravel, ['migrations', 'cms_notification', 'cms_privileges', 'cms_module']);
             })->map(function ($row) {
                 return $row->Tables_in_laravel;
             });
@@ -36,30 +36,7 @@ class ModuleGeneratorController extends Controller
         ));
     }
 
-    function getStep2(Request $request) 
-    {
-        $id = $request->get('id');
-        $findModule = $this->cmsModuleRepositories->model->newQuery()
-            ->find($id);
-            
-        $column = collect(Schema::getColumnListing($findModule->table_name))
-            ->filter(function ($row) {
-                $except = ['id', 'created_at', 'updated_at', 'deleted_at', 'password'];
-                return !in_array($row, $except);
-            })
-            ->map(function ($row) {
-                return (object) [
-                    "label" => Str::title(str_replace(['_'], ' ', $row)),
-                    "name" => $row,
-                ];
-            });
-        return view('admin.module.step2', compact(
-            "id",
-            "column"
-        ));
-    }
-
-    function postStep2(Request $request)
+    public function postStep1(Request $request)
     {
         $table = $request->table;
         $name = Str::studly($request->name);
@@ -71,7 +48,7 @@ class ModuleGeneratorController extends Controller
             '--tableName' => $table,
             '--withTable' => "yes",
         ]);
-        
+
         // delete old module
         $this->cmsModuleRepositories->model->newQuery()
             ->where([
@@ -95,12 +72,12 @@ class ModuleGeneratorController extends Controller
         ]);
     }
 
-    function getStep3(Request $request) 
+    function getStep2(Request $request)
     {
         $id = $request->get('id');
         $findModule = $this->cmsModuleRepositories->model->newQuery()
             ->find($id);
-            
+
         $column = collect(Schema::getColumnListing($findModule->table_name))
             ->filter(function ($row) {
                 $except = ['id', 'created_at', 'updated_at', 'deleted_at', 'password'];
@@ -112,17 +89,16 @@ class ModuleGeneratorController extends Controller
                     "name" => $row,
                 ];
             });
-        return view('admin.module.step3', compact(
+        return view('admin.module.step2', compact(
             "id",
             "column"
         ));
     }
 
-    public function postStep3(Request $request)
+    function postStep2(Request $request)
     {
-        $id = $request->id;
         $findModule = $this->cmsModuleRepositories->model->newQuery()
-            ->find($id);
+            ->find($request->id);
 
         Artisan::call(CreateControllerCommand::class, [
             'name' => "Admin\\$findModule->name",
@@ -153,6 +129,52 @@ class ModuleGeneratorController extends Controller
         return redirect()->route('module-create.step3', [
             "id" => $findModule->id,
         ]);
+    }
+
+    function getStep3(Request $request)
+    {
+        $id = $request->get('id');
+        $findModule = $this->cmsModuleRepositories->model->newQuery()
+            ->find($id);
+
+        $column = collect(Schema::getColumnListing($findModule->table_name))
+            ->filter(function ($row) {
+                $except = ['id', 'created_at', 'updated_at', 'deleted_at', 'password'];
+                return !in_array($row, $except);
+            })
+            ->map(function ($row) {
+                return (object) [
+                    "label" => Str::title(str_replace(['_'], ' ', $row)),
+                    "name" => $row,
+                ];
+            });
+        return view('admin.module.step3', compact(
+            "id",
+            "column"
+        ));
+    }
+
+    public function postStep3(Request $request)
+    {
+        $findModule = $this->cmsModuleRepositories->model->newQuery()
+            ->find($request->id);
+
+        return redirect()->route('module-create.step4', [
+            "id" => $findModule->id,
+        ]);
+    }
+
+    public function getStep4(Request $request)
+    {
+        $id = $request->get('id');
+        return view('admin.module.step4', compact(
+            "id"
+        ));
+    }
+
+    public function postStep4(Request $request)
+    {
+
     }
 
 }

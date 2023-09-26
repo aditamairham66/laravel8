@@ -45,7 +45,7 @@
       <div class="card-header">
           <h3 class="card-title">Form Display</h3>
       </div>
-      <form method="post" autocomplete="off" action="{{ route('module-create.step4') }}">
+      <form method="post" autocomplete="off" action="{{ route('module-create.step3') }}">
           {{ csrf_field() }}
           <input type="hidden" name="id" value="{{ $id }}">
 

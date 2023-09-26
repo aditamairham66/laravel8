@@ -45,7 +45,7 @@
     <div class="card-header">
         <h3 class="card-title">Table Display</h3>
     </div>
-    <form method="post" action="{{ route('module-create.step3') }}">
+    <form method="post" action="{{ route('module-create.step2') }}">
         {{csrf_field()}}
         <input type="hidden" name="id" value="{{ $id }}">
 
@@ -64,22 +64,22 @@
                 @foreach ($column as $row)
                 <tr>
                     <td>
-                        <input 
+                        <input
                             type='text' name='column[]'
-                            class='column form-control notfocus' 
-                            onclick='showColumnSuggest(this)' 
-                            onKeyUp='showColumnSuggestLike(this)' 
-                            placeholder='Column Name' 
+                            class='column form-control notfocus'
+                            onclick='showColumnSuggest(this)'
+                            onKeyUp='showColumnSuggestLike(this)'
+                            placeholder='Column Name'
                             value='{{ $row->label }}'
                         />
                     </td>
                     <td>
-                        <input 
-                            type='text' name='name[]' 
-                            class='name form-control notfocus' 
-                            onclick='showNameSuggest(this)' 
+                        <input
+                            type='text' name='name[]'
+                            class='name form-control notfocus'
+                            onclick='showNameSuggest(this)'
                             onKeyUp='showNameSuggestLike(this)'
-                            placeholder='Field Name' 
+                            placeholder='Field Name'
                             value='{{ $row->name }}'
                         />
                     </td>
@@ -122,22 +122,22 @@
         clone = `
         <tr>
             <td>
-                <input 
+                <input
                     type='text' name='column[]'
-                    class='column form-control notfocus' 
-                    onclick='showColumnSuggest(this)' 
-                    onKeyUp='showColumnSuggestLike(this)' 
-                    placeholder='Column Name' 
+                    class='column form-control notfocus'
+                    onclick='showColumnSuggest(this)'
+                    onKeyUp='showColumnSuggestLike(this)'
+                    placeholder='Column Name'
                     value=''
                 />
             </td>
             <td>
-                <input 
-                    type='text' name='name[]' 
-                    class='name form-control notfocus' 
-                    onclick='showNameSuggest(this)' 
+                <input
+                    type='text' name='name[]'
+                    class='name form-control notfocus'
+                    onclick='showNameSuggest(this)'
                     onKeyUp='showNameSuggestLike(this)'
-                    placeholder='Field Name' 
+                    placeholder='Field Name'
                     value=''
                 />
             </td>
@@ -180,7 +180,7 @@
         $(this).parent('ul').prev('input[type=text]').val(v);
         $(this).parent('ul').remove();
     })
-    
+
     $(document).on('click', '.table-display .btn-delete', function () {
         $(this).parent().parent().remove();
     })

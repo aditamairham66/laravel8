@@ -40,12 +40,12 @@
         </a>
     </li>
   </ul>
-  
+
   <div class="card">
     <div class="card-header">
         <h3 class="card-title">Module Information</h3>
     </div>
-    <form method="post" action="{{ route('module-create.step2') }}">
+    <form method="post" action="{{ route('module-create.step1') }}">
         {{ csrf_field() }}
         <input type="hidden" name="id" value="{{ $id }}">
         <div class="card-body">
@@ -54,7 +54,7 @@
                 <select name="table" id="table" required class="form-select form-select-solid" data-control="select2" value="">
                     <option value="">**Please select a Table</option>
                     @foreach ($table as $rowTable)
-                        <option 
+                        <option
                             value="{{ $rowTable }}"
                         >{{ $rowTable }}</option>
                     @endforeach
@@ -84,7 +84,7 @@
         </div>
     </form>
   </div>
-  
+
 @endsection
 @push('bottom')
     <script>
@@ -98,7 +98,7 @@
                 text: `${item.text}`
             });
             span.prepend(`
-                <i class="${item.element.getAttribute('data-icon')} text-dark fs-1"></i>&nbsp; 
+                <i class="${item.element.getAttribute('data-icon')} text-dark fs-1"></i>&nbsp;
             `);
             return span;
         }
