@@ -98,8 +98,23 @@ class ModuleGeneratorController extends Controller
     function getStep3(Request $request) 
     {
         $id = $request->get('id');
+        $findModule = $this->cmsModuleRepositories->model->newQuery()
+            ->find($id);
+            
+        $column = collect(Schema::getColumnListing($findModule->table_name))
+            ->filter(function ($row) {
+                $except = ['id', 'created_at', 'updated_at', 'deleted_at', 'password'];
+                return !in_array($row, $except);
+            })
+            ->map(function ($row) {
+                return (object) [
+                    "label" => Str::title(str_replace(['_'], ' ', $row)),
+                    "name" => $row,
+                ];
+            });
         return view('admin.module.step3', compact(
-            "id"
+            "id",
+            "column"
         ));
     }
 
