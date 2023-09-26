@@ -96,9 +96,17 @@ class CreateModule1Command extends Command
                         "name" => $row,
                         "type" => $type,
                         "validation" => "required",
+                        "is_required" => true
                     ];
                 });
         }
+
+        foreach ($getColumn as $row) {
+            $getContentField = file_get_contents(__DIR__.'/stub/module/type/text/input.blade.php.stub');
+            $getContentField = str_replace('$columnName', $row->label, $getContentField);
+            $getContentField = str_replace('$column', $row->name, $getContentField);
+        }
+        dd($getColumn);
 
         // make Repositories folder
         $pathView = $this->viewPath("admin\page\\$pathName");

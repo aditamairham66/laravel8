@@ -173,6 +173,7 @@ class ModuleGeneratorController extends Controller
                         "name" => $row,
                         "type" => request('type')[$i],
                         "validation" => request('validation')[$i],
+                        "is_required" => Str::contains(request('validation')[$i], 'required')
                     ];
                 }),
         ]);
