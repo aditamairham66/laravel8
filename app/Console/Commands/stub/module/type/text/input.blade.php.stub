@@ -3,5 +3,5 @@
     is-required="$required"
     label="$columnName"
     column="$column"
-    data="{{ $form->$column }}"
+    value="{{ $form->$column }}"
 />

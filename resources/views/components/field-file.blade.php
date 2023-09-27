@@ -8,10 +8,11 @@
 
 <div class="form-group mb-10">
     <label
+        @class([
+            "form-label col-sm-2",
+            "required" => $isRequired
+        ])
         @if($isRequired)
-        class="form-label col-sm-2"
-        @else
-        class="form-label col-sm-2 required"
         title="this field required"
         data-bs-toggle="tooltip"
         data-bs-trigger="hover"
