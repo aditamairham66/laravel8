@@ -24,7 +24,14 @@ class {class_name}Controller extends BaseController
         $this->set('table', $table);
 
         $this->table = $table;
-        $this->button = $this->action($actionList);
+        $this->button = $this->action([
+            "isAdd" => $isAdd,
+            "isEdit" => $isEdit,
+            "isDelete" => $isDelete,
+            "isDetail" => $isDetail,
+            "isShow" => $isShow,
+            "isBulkButton" => $isBulkButton,
+        ]);
         $this->buttonBulk = [
             // ["type" => "type", "name" => "Name Text"],
         ];

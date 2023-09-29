@@ -14,9 +14,12 @@ use Illuminate\Support\Facades\Schema;
 
 class ModuleGeneratorController extends Controller
 {
+    private $cmsModuleRepositories;
+
     public function __construct(
-        private CmsModuleRepositories $cmsModuleRepositories
+        CmsModuleRepositories $cmsModuleRepositories
     ) {
+        $this->cmsModuleRepositories = $cmsModuleRepositories;
     }
 
     function getStep1(Request $request)
@@ -44,7 +47,15 @@ class ModuleGeneratorController extends Controller
             'name' => "Admin\\$name",
             'type' => "admin",
             '--tableName' => $table,
-            '--withTable' => "yes"
+            '--withTable' => "yes",
+            '--tableAction' => [
+                "isAdd" => true,
+                "isEdit" => true,
+                "isDelete" => true,
+                "isDetail" => true,
+                "isShow" => true,
+                "isBulkButton" => true,
+            ]
         ]);
 
         // delete old module

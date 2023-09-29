@@ -105,7 +105,36 @@ class CreateControllerCommand extends Command
             $addField = $fieldTable->code;
             $editParams = implode("\n", $fieldTable->params);
             $editField = $fieldTable->code;
-            if (empty($getTableAction)) $getTableAction = [];
+
+            $isAdd = true;
+            if (!empty($getTableAction['isAdd'])) {
+                $isAdd = $getTableAction['isAdd'];
+            }
+
+            $isEdit = true;
+            if (!empty($getTableAction['isEdit'])) {
+                $isEdit = $getTableAction['isEdit'];
+            }
+
+            $isDelete = true;
+            if (!empty($getTableAction['isDelete'])) {
+                $isDelete = $getTableAction['isDelete'];
+            }
+
+            $isDetail = true;
+            if (!empty($getTableAction['isDetail'])) {
+                $isDetail = $getTableAction['isDetail'];
+            }
+
+            $isShow = true;
+            if (!empty($getTableAction['isShow'])) {
+                $isShow = $getTableAction['isShow'];
+            }
+
+            $isBulkButton = true;
+            if (!empty($getTableAction['isBulkButton'])) {
+                $isBulkButton = $getTableAction['isBulkButton'];
+            }
 
             // get base template repositories
             $getContentControllerAdmin= file_get_contents(__DIR__.'/stub/controller/controller_admin.blade.php.stub');
@@ -122,7 +151,12 @@ class CreateControllerCommand extends Command
             $getContentControllerAdmin = str_replace('{addField}', $addField, $getContentControllerAdmin);
             $getContentControllerAdmin = str_replace('{editParams}', $editParams, $getContentControllerAdmin);
             $getContentControllerAdmin = str_replace('{editField}', $editField, $getContentControllerAdmin);
-            $getContentControllerAdmin = str_replace('$actionList', var_export($getTableAction, true), $getContentControllerAdmin);
+            $getContentControllerAdmin = str_replace('$isAdd', $isAdd, $getContentControllerAdmin);
+            $getContentControllerAdmin = str_replace('$isEdit', $isEdit, $getContentControllerAdmin);
+            $getContentControllerAdmin = str_replace('$isDelete', $isDelete, $getContentControllerAdmin);
+            $getContentControllerAdmin = str_replace('$isDetail', $isDetail, $getContentControllerAdmin);
+            $getContentControllerAdmin = str_replace('$isShow', $isShow, $getContentControllerAdmin);
+            $getContentControllerAdmin = str_replace('$isBulkButton', $isBulkButton, $getContentControllerAdmin);
             // create repositories interfaces
             if(file_exists("$pathController\\$className"."Controller.php")) {
                 unlink("$pathController\\$className"."Controller.php");
