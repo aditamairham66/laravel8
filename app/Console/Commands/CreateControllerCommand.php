@@ -13,7 +13,7 @@ class CreateControllerCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'create:controller {name} {type=general} {--tableName=} {--withTable=no} {--tableAction=}';
+    protected $signature = 'create:controller {name} {type=general} {--tableName=} {--withTable=no} {--tableAction=} {--column=}';
 
     /**
      * The console command description.
@@ -40,12 +40,13 @@ class CreateControllerCommand extends Command
     public function handle()
     {
         $getName = $this->argument("name");
-        $getType= $this->argument("type");
-        $getTable= $this->option("tableName");
-        $getWithTable= $this->option("withTable");
-        $getTableAction= $this->option("tableAction");
+        $getType = $this->argument("type");
+        $getTable = $this->option("tableName");
+        $getWithTable = $this->option("withTable");
+        $getTableAction = $this->option("tableAction");
+        $getColumn = $this->option("column");
 
-        $this->make($getName, $getType, $getTable, $getWithTable, $getTableAction);
+        $this->make($getName, $getType, $getTable, $getWithTable, $getTableAction, $getColumn);
     }
 
     protected function appPath($path)
@@ -57,7 +58,7 @@ class CreateControllerCommand extends Command
         }
     }
 
-    protected function make($name, $type, $getTable, $isWithTable, $getTableAction)
+    protected function make($name, $type, $getTable, $isWithTable, $getTableAction, $getColumn)
     {
         $listPath = explode('\\', $name);
         // get name controller
@@ -70,6 +71,29 @@ class CreateControllerCommand extends Command
         // get table name
         if (empty($getTable)) {
             $getTable = Str::camel($className);
+        }
+
+        if (empty($getColumn)) {
+            $columnTable = Schema::getColumnListing($getTable);
+            $getColumn = collect($columnTable)
+                ->filter(function ($row) {
+                    return !in_array($row, ['id', 'created_at', 'updated_at', 'deleted_at']);
+                })->map(function ($row) {
+                    if (in_array($row, ['image', 'photo'])) {
+                        $type = "file";
+                    } elseif (in_array($row, ['desc', 'description'])) {
+                        $type = "textarea";
+                    } else {
+                        $type = "text";
+                    }
+                    return (object) [
+                        "label" => Str::title(str_replace(['_'], ' ', $row)),
+                        "name" => $row,
+                        "type" => $type,
+                        "validation" => "required",
+                        "is_required" => true
+                    ];
+                });
         }
 
         if ($isWithTable == "yes") {
@@ -85,9 +109,11 @@ class CreateControllerCommand extends Command
                 // create request
                 $this->call(CreateRequestCommand::class, [
                     'name' => "Admin\\$className\\Add".$className."Request",
+                    '--column' => $getColumn,
                 ]);
                 $this->call(CreateRequestCommand::class, [
                     'name' => "Admin\\$className\\Edit".$className."Request",
+                    '--column' => $getColumn,
                 ]);
             }
         }
@@ -99,7 +125,8 @@ class CreateControllerCommand extends Command
         }
 
         if ($type == "admin") {
-            $fieldTable = $this->fieldTable($getTable);
+            $fieldTable = $this->fieldTable($getColumn);
+
             $classField = implode("\n", $fieldTable->class);
             $addParams = implode("\n", $fieldTable->params);
             $addField = $fieldTable->code;
@@ -209,35 +236,28 @@ class CreateControllerCommand extends Command
         }
     }
 
-    protected function fieldTable($tableName)
+    protected function fieldTable($fieldTable)
     {
-        $columnTable = Schema::getColumnListing($tableName);
-        $fieldTable = collect($columnTable)
-            ->filter(function ($row) {
-                $except = ['id', 'created_at', 'updated_at', 'deleted_at'];
-                return in_array($row, $except) ? false : true;
-            });
-
         $code = "";
         $class = [];
         $params = [];
         foreach ($fieldTable as $row) {
-            if (in_array($row, ['image', 'photo'])) {
+            if (in_array($row->name, ['image', 'photo'])) {
                 $class[] = "use App\Helpers\Upload;";
 
-                $params[] = "\$".$row." = Upload::move('$row', 'profile', 'Yes');";
-                $code .= "if (\$".$row.") { \n";
-                $code .= "\$save->".$row." = \$".$row."; \n";
+                $params[] = "\$".$row->name." = Upload::move('$row->name', 'profile', 'Yes');";
+                $code .= "if (\$".$row->name.") { \n";
+                $code .= "\$save->".$row->name." = \$".$row->name."; \n";
                 $code .= "} \n";
 
-            } elseif ($row == "password") {
+            } elseif ($row->name == "password") {
                 $class[] = "use Illuminate\Support\Facades\Hash;";
 
-                $code .= "if (\$save->".$row.") { \n";
-                $code .= "\$save->".$row." = Hash::make(\$request->".$row."); \n";
+                $code .= "if (\$save->".$row->name.") { \n";
+                $code .= "\$save->".$row->name." = Hash::make(\$request->".$row->name."); \n";
                 $code .= "} \n";
             } else {
-                $code .= "\$save->".$row." = \$request->".$row."; \n";
+                $code .= "\$save->".$row->name." = \$request->".$row->name."; \n";
             }
         }
 

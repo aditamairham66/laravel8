@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Str;
 
 class CreateRequestCommand extends Command
@@ -12,7 +13,7 @@ class CreateRequestCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'create:request {name}';
+    protected $signature = 'create:request {name} {--tableName=} {--column=}';
 
     /**
      * The console command description.
@@ -39,8 +40,10 @@ class CreateRequestCommand extends Command
     public function handle()
     {
         $getName = $this->argument("name");
+        $getTableName = $this->option("tableName");
+        $getColumn = $this->option("column");
 
-        $this->make($getName);
+        $this->make($getName, $getTableName, $getColumn);
     }
 
     protected function appPath($path)
@@ -52,7 +55,7 @@ class CreateRequestCommand extends Command
         }
     }
 
-    protected function make($name)
+    protected function make($name, $getTableName, $getColumn)
     {
         $listPath = explode('\\', $name);
         // get name controller
@@ -62,8 +65,29 @@ class CreateRequestCommand extends Command
         // create class name
         $className = str_replace(['controller', 'Controller', 'controllers', 'Controllers'], '', $endPath);
         $className = Str::studly($className);
-        // get table name
-        $getTable = Str::slug($className);
+
+        if (empty($getColumn)) {
+            $columnTable = Schema::getColumnListing($getTableName);
+            $getColumn = collect($columnTable)
+                ->filter(function ($row) {
+                    return !in_array($row, ['id', 'created_at', 'updated_at', 'deleted_at']);
+                })->map(function ($row) {
+                    if (in_array($row, ['image', 'photo'])) {
+                        $type = "file";
+                    } elseif (in_array($row, ['desc', 'description'])) {
+                        $type = "textarea";
+                    } else {
+                        $type = "text";
+                    }
+                    return (object) [
+                        "label" => Str::title(str_replace(['_'], ' ', $row)),
+                        "name" => $row,
+                        "type" => $type,
+                        "validation" => "required",
+                        "is_required" => true
+                    ];
+                });
+        }
 
         // make class name folder
         $pathRequests = $this->appPath("Http\Requests\\$pathName");
@@ -77,13 +101,19 @@ class CreateRequestCommand extends Command
         $getContentRequests = str_replace('{path_class}', $pathName, $getContentRequests);
         // change {class_name}
         $getContentRequests = str_replace('{class_name}', $className, $getContentRequests);
-        // create repositories interfaces
-        if(file_exists("$pathRequests/$className".".php")) {
-            $this->info($className." requests already created!");
-        }else{
-            file_put_contents("$pathRequests/$className".".php", $getContentRequests);
-            $this->info($className." requests has been created!");
+        $html = [];
+        foreach ($getColumn as $row) {
+            $html[] = "\t\t\t".'"'.$row->name.'" => '.'"'.$row->validation.'"';
         }
+        $getContentRequests = str_replace('$rules', implode(",\n", $html), $getContentRequests);
+
+        if(file_exists("$pathRequests\\$className.php")) {
+            unlink("$pathRequests\\$className.php");
+        }
+
+        file_put_contents("$pathRequests/$className.php", $getContentRequests);
+
+        $this->info($className." requests has been created!");
     }
 
 }

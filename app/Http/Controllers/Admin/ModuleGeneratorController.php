@@ -173,6 +173,35 @@ class ModuleGeneratorController extends Controller
     {
         $findModule = $this->cmsModuleRepositories->model->newQuery()
             ->find($request->id);
+        $name = Str::studly($findModule->name);
+
+        Artisan::call(CreateControllerCommand::class, [
+            'name' => "Admin\\$name",
+            'type' => "admin",
+            '--tableName' => $findModule->table_name,
+            '--withTable' => "yes",
+            '--tableAction' => [
+                "isAdd" => true,
+                "isEdit" => true,
+                "isDelete" => true,
+                "isDetail" => true,
+                "isShow" => true,
+                "isBulkButton" => true,
+            ],
+            '--column' => collect(request('name'))
+                ->filter(function ($row) {
+                    return !in_array($row, ["", null]);
+                })
+                ->map(function ($row, $i) {
+                    return (object) [
+                        "label" => request('label')[$i],
+                        "name" => $row,
+                        "type" => request('type')[$i],
+                        "validation" => request('validation')[$i],
+                        "is_required" => Str::contains(request('validation')[$i], 'required')
+                    ];
+                }),
+        ]);
 
         Artisan::call(CreateModule1Command::class, [
             'name' => $findModule->name,
