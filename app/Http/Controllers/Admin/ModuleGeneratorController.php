@@ -14,12 +14,9 @@ use Illuminate\Support\Facades\Schema;
 
 class ModuleGeneratorController extends Controller
 {
-    private $cmsModuleRepositories;
     public function __construct(
-        CmsModuleRepositories $cmsModuleRepositories
-    )
-    {
-        $this->cmsModuleRepositories = $cmsModuleRepositories;
+        private CmsModuleRepositories $cmsModuleRepositories
+    ) {
     }
 
     function getStep1(Request $request)

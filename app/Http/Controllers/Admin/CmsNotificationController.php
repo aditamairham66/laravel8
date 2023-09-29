@@ -20,7 +20,7 @@ class CmsNotificationController extends BaseController
     {
         // set value to private property
         $this->set('table', $table);
-        
+
         $this->table = $table;
         $this->button = $this->action([
             "isAdd" => false,
